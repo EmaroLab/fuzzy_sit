@@ -66,8 +66,8 @@ public interface FuzzySITBase {
 
     double ROLE_SHOULDER_MIN = 0;
     double ROLE_SHOULDER_MAX = 20;
-    double ROLE_SHOULDER_BOTTOM_PERCENT = 50;// - x%
-    String ROLE_SHOULDER_RESOLUTION = "#.####"; // todo adjust
+    double ROLE_SHOULDER_BOTTOM_PERCENT = 30;// - x%
+    String ROLE_SHOULDER_RESOLUTION = "#.##"; // todo adjust
 
     int LOG_TIME_LENGTH = 20;
 

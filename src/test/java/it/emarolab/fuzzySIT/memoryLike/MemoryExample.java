@@ -1,14 +1,15 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
-import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.memoryLike.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-class MemoryExample{
+public class MemoryExample{
 
     private List<Timing> timings = new ArrayList<>();
     private Timing timing;
@@ -25,7 +26,12 @@ class MemoryExample{
         this.synchConsolidateForget = synchConsolidateForget;
     }
 
+    private String storingName = "";
     public void storeExperience(PerceptionBase scene){
+        experience( scene, true);
+    }
+    public void storeExperience(PerceptionBase scene, String storingName){
+        this.storingName = storingName;
         experience( scene, true);
     }
     public void retrieveExperience(PerceptionBase scene){
@@ -47,39 +53,39 @@ class MemoryExample{
         initialTime = System.nanoTime();
         if ( storeOrRetrieve) {
             if ( scene.getSceneName().isEmpty())
-                learnedOrRetrievedScene = memory.store();
+                if ( storingName.isEmpty())
+                    learnedOrRetrievedScene = memory.store();
+                else learnedOrRetrievedScene = memory.store(storingName);
             else learnedOrRetrievedScene = memory.store( scene.getSceneName());
             timing.storingTime = System.nanoTime() - initialTime;
-            logs = "storing";
+            //logs = "storing";
             if( learnedOrRetrievedScene != null)
                 System.out.println( "[  LEARN ]\texperience: " + learnedOrRetrievedScene);
         } else {
             learnedOrRetrievedScene = memory.retrieve();
             timing.retrievingTime = System.nanoTime() - initialTime;
-            logs = "retrieving";
+            //logs = "retrieving";
             System.out.println( "[RETRIEVE]\texperience: " + learnedOrRetrievedScene);
         }
         // synchronous consolidation and forgetting
-        if ( learnedOrRetrievedScene != null & synchConsolidateForget) {
-            consolidateAndForget(scene, logs);
-        }
-        System.out.println( "[ RECOGN.]\texperience: " + memory.recognize());
+        if ( synchConsolidateForget & learnedOrRetrievedScene != null)
+            consolidateAndForget();
+
+        String log = "";
+        Map<SceneHierarchyVertex, Double> recognized = memory.recognize();
+        for( SceneHierarchyVertex rec : recognized.keySet())
+            log += rec + "{sim:" + memory.getAbox().getSimilarity( rec) + "}=" + recognized.get( rec) + ", ";
+        System.out.println( "[ RECOGN.]\texperience: " + log);
         System.out.println( "     Time spent " + timing);
         timings.add( timing);
         System.out.println( "----------------------------------------------");
     }
 
     public void consolidateAndForget(){
-        consolidateAndForget( null);
-    }
-    public void consolidateAndForget( PerceptionBase scene){
-        consolidateAndForget( scene, "external call");
-    }
-    private void consolidateAndForget( PerceptionBase scene, String logs){
         long initialTime = System.nanoTime();
         memory.consolidate();
         timing.consolidateTime = System.nanoTime() - initialTime;
-        System.out.println( "[ CONSOL.]\tnew experience from " + logs + " " + scene + " -> ");
+        System.out.println( "[ CONSOL.]\tconsolidating..."); //new experience from " + logs + " " + scene + " -> ");
 
         initialTime = System.nanoTime();
         Set<SceneHierarchyVertex> forgotten = memory.forget();
@@ -125,7 +131,7 @@ class MemoryExample{
         long encodeAverage, storeAverage, retrieveAverage, consolidateAverage, forgetAverage, allAverage;
         long encodeVariance, storeVariance, retrieveVariance, consolidateVariance, forgetVariance, allVariance;
 
-        List<Timing> time;
+        List<MemoryExample.Timing> time;
 
         private Measure(){
             time = timings;

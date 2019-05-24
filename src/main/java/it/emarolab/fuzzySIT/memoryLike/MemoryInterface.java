@@ -1,6 +1,6 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
-import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.memoryLike.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.SITABox;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;

@@ -1,7 +1,7 @@
 package it.emarolab.fuzzySIT.memoryLike;
 
 import it.emarolab.fuzzySIT.FuzzySITBase;
-import it.emarolab.fuzzySIT.perception.simple2D.ConnectObjectScene;
+import it.emarolab.fuzzySIT.memoryLike.perception.simple2D.ConnectObjectScene;
 
 // TODO reset ids when overflow
 
@@ -10,7 +10,7 @@ public class MemoryTest {
     public static ConnectObjectScene scene0(){
         ConnectObjectScene scene = new ConnectObjectScene();
         scene.addTable(0,0, .9);
-        scene.addScrewDriver( 0, .02, .9);
+        scene.addConnector( 0, .02, .9);
         return scene;
     }
 
@@ -54,8 +54,8 @@ public class MemoryTest {
         scene.addLeg( 0.01, 0, .9);
         scene.addLeg( 0.03, 0, .9);
         scene.addPen( .5, .5, .9);
-        scene.addScrewDriver( -.5, .02, .9);
-        scene.addScrewDriver( -.5, .1, .9);
+        scene.addConnector( -.5, .02, .9);
+        scene.addConnector( -.5, .1, .9);
         return scene;
     }
 
@@ -64,7 +64,7 @@ public class MemoryTest {
         scene.addTable(0,0, .9);
         scene.addLeg( 0.01, 0, .9);
         scene.addLeg( 0.03, 0, .9);
-        scene.addScrewDriver( .2, .3, .9);
+        scene.addConnector( .2, .3, .9);
         return scene;
     }
 
@@ -73,7 +73,7 @@ public class MemoryTest {
         scene.addTable(0,0, .9);
         scene.addTable( .0, .05, .9);
         scene.addLeg( 0, .08, .9);
-        scene.addScrewDriver( .0, .03, .9);
+        scene.addConnector( .0, .03, .9);
         return scene;
     }
 
@@ -93,7 +93,7 @@ public class MemoryTest {
         scene.addTable(0,0, .9);
         scene.addLeg( 0.01, 0, .9);
         scene.addLeg( 0.03, 0, .9);
-        scene.addScrewDriver(2.1, 0, .8);
+        scene.addConnector(2.1, 0, .8);
         scene.addPen(2.08, 0, .8);
         scene.addLeg(2.0, 0, .8);
         return scene;

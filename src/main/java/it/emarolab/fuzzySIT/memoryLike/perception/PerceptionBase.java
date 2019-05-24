@@ -1,4 +1,4 @@
-package it.emarolab.fuzzySIT.perception;
+package it.emarolab.fuzzySIT.memoryLike.perception;
 
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
 

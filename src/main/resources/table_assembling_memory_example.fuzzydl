@@ -13,10 +13,11 @@
 (disjoint Object Scene)
 (disjoint SpatialObject Scene)
 
-(implies Leg         Object)
-(implies Table       Object)
-(implies Screwdriver Object)
-(implies Pen         Object)
+(implies LEG         Object)
+(implies TABLE       Object)
+(implies CONNECTOR   Object)
+(implies PEN         Object)
+(implies CONTAINER   Object)
 
 
 #############################################################################################
@@ -62,10 +63,11 @@
 #############################################################################################
 
 
-(define-concept LegConnected         (and Leg         (some isConnectedTo  SpatialObject)))
-(define-concept TableConnected       (and Table       (some isConnectedTo  SpatialObject)))
-(define-concept ScrewdriverConnected (and Screwdriver (some isConnectedTo  SpatialObject)))
-(define-concept PenConnected         (and Pen         (some isConnectedTo  SpatialObject)))
+(define-concept LEGConnected         (and LEG         (some isConnectedTo  SpatialObject)))
+(define-concept TABLEConnected       (and TABLE       (some isConnectedTo  SpatialObject)))
+(define-concept CONNECTORConnected   (and CONNECTOR   (some isConnectedTo  SpatialObject)))
+(define-concept PENConnected         (and PEN         (some isConnectedTo  SpatialObject)))
+(define-concept CONTAINERConnected   (and CONTAINER   (some isConnectedTo  SpatialObject)))
 
 
 #############################################################################################

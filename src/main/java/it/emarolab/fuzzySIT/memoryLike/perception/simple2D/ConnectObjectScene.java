@@ -1,24 +1,21 @@
-package it.emarolab.fuzzySIT.perception.simple2D;
+package it.emarolab.fuzzySIT.memoryLike.perception.simple2D;
 
-import it.emarolab.fuzzySIT.perception.FeaturedSpatialObject;
-import it.emarolab.fuzzySIT.perception.PerceptionBase;
+import it.emarolab.fuzzySIT.memoryLike.perception.FeaturedSpatialObject;
+import it.emarolab.fuzzySIT.memoryLike.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialRelation;
-import javafx.scene.chart.XYChart;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class ConnectObjectScene extends PerceptionBase<Point2> {
 
     // the name of the types of objects in this example (π)
-    public static final String LEG = "Leg";
-    public static final String TABLE = "Table";
-    public static final String SCREWDRIVER = "Screwdriver";
-    public static final String PEN = "Pen";
+    public static final String LEG = "LEG";
+    public static final String TABLE = "TABLE";
+    public static final String CONNECTOR = "CONNECTOR";
+    public static final String PEN = "PEN";
+    public static final String CONTAINER = "CONTAINER";
     // the name of the spatial relations used in this example (ζ)
     public static final String CONNECTED = "isConnectedTo";
 
-    private static final double CONNECTED_THRESHOLD = 0.1; // meters (positive number)
+    private static final double CONNECTED_THRESHOLD = 0.20; // meters (positive number)
 
     // the name of individuals indicating objects in the scene
     public static final String LEG_IND_PREFIX = "L";
@@ -55,7 +52,7 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
             // [0.000000000000001,0.999999999999999] set with resolution ROLE_SHOULDER_RESOLUTION = "#.####"; and ROLE_SHOULDER_RESOLUTION = "#.####";
             if ( degree >= 0.000000000000001 & degree <= .999999999999999)
                 return new SpatialRelation(anObject.getObject(), CONNECTED, newObject.getObject(), degree);
-            //else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
+            else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
         }
         return null;
     }
@@ -68,36 +65,18 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         Point2 feature = new Point2(xPose,yPose);
         this.addObject( ConnectObjectScene.TABLE, ConnectObjectScene.getNewTableInd(), degree, feature);
     }
-    public void addScrewDriver( double xPose, double yPose, double degree){
+    public void addConnector( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
-        this.addObject( ConnectObjectScene.SCREWDRIVER, ConnectObjectScene.getNewScrewDriverInd(), degree, feature);
+        this.addObject( ConnectObjectScene.CONNECTOR, ConnectObjectScene.getNewScrewDriverInd(), degree, feature);
+    }
+    public void addContainer( double xPose, double yPose, double degree){
+        Point2 feature = new Point2(xPose,yPose);
+        this.addObject( ConnectObjectScene.CONTAINER, ConnectObjectScene.getNewScrewDriverInd(), degree, feature);
     }
     public void addPen( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
         this.addObject( ConnectObjectScene.PEN, ConnectObjectScene.getNewPenInd(), degree, feature);
     }
 
-
-    public Set<XYChart.Data> getLegsPosition(){
-        return getObjectPosition( LEG);
-    }
-    public Set<XYChart.Data> getTablesPosition(){
-        return getObjectPosition( TABLE);
-    }
-    public Set<XYChart.Data> getPensPosition(){
-        return getObjectPosition( PEN);
-    }
-    public Set<XYChart.Data> getScrewDrivers(){
-        return getObjectPosition( SCREWDRIVER);
-    }
-    private Set<XYChart.Data> getObjectPosition( String type){
-        Set<XYChart.Data> out = new HashSet<>();
-        for( FeaturedSpatialObject obj : getObjects())
-            if( obj.getType().equals( type)) {
-                Point2 feature = (Point2) obj.getFeature();
-                out.add( new XYChart.Data( feature.getX(),feature.getY()));
-            }
-        return out;
-    }
 
 }
