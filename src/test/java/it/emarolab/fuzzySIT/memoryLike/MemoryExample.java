@@ -45,9 +45,10 @@ public class MemoryExample{
         long initialTime = System.nanoTime();
         memory.encode( scene);
         timing.encodingTime = System.nanoTime() - initialTime;
-        System.out.println( "[ ENCODE ]\texperience: " + scene);
-        // set store or retrieve cases
+        System.out.println( "[ ENCODE ]\tfacts: " + scene);
+        System.out.println( "          \tbeliefs: " + memory.getAbox().getDefinition());
 
+        // set store or retrieve cases
         String logs;
         SceneHierarchyVertex learnedOrRetrievedScene;
         initialTime = System.nanoTime();
@@ -60,7 +61,7 @@ public class MemoryExample{
             timing.storingTime = System.nanoTime() - initialTime;
             //logs = "storing";
             if( learnedOrRetrievedScene != null)
-                System.out.println( "[  LEARN ]\texperience: " + learnedOrRetrievedScene);
+                System.out.println( "[  LEARN ]\tnew category: " + learnedOrRetrievedScene);
         } else {
             learnedOrRetrievedScene = memory.retrieve();
             timing.retrievingTime = System.nanoTime() - initialTime;
@@ -75,7 +76,7 @@ public class MemoryExample{
         Map<SceneHierarchyVertex, Double> recognized = memory.recognize();
         for( SceneHierarchyVertex rec : recognized.keySet())
             log += rec + "{sim:" + memory.getAbox().getSimilarity( rec) + "}=" + recognized.get( rec) + ", ";
-        System.out.println( "[ RECOGN.]\texperience: " + log);
+        System.out.println( "[ RECOGN.]\tcategories: " + log);
         System.out.println( "     Time spent " + timing);
         timings.add( timing);
         System.out.println( "----------------------------------------------");

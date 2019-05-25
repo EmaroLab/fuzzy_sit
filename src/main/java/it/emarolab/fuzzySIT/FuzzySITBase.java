@@ -66,8 +66,8 @@ public interface FuzzySITBase {
 
     double ROLE_SHOULDER_MIN = 0;
     double ROLE_SHOULDER_MAX = 20;
-    double ROLE_SHOULDER_BOTTOM_PERCENT = 30;// - x%
-    String ROLE_SHOULDER_RESOLUTION = "#.##"; // todo adjust
+    double ROLE_SHOULDER_BOTTOM_PERCENT = 40;// - x% (fuzziness parameter)
+    String ROLE_SHOULDER_RESOLUTION = "#.##"; // defines the precision of the shoulder (eg, number of digits after point)
 
     int LOG_TIME_LENGTH = 20;
 

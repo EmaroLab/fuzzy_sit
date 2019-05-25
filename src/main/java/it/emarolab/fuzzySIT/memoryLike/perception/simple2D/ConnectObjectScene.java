@@ -15,26 +15,30 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     // the name of the spatial relations used in this example (ζ)
     public static final String CONNECTED = "isConnectedTo";
 
-    private static final double CONNECTED_THRESHOLD = 0.20; // meters (positive number)
+    private static final double CONNECTED_THRESHOLD = 0.15; // meters (positive number)
 
     // the name of individuals indicating objects in the scene
-    public static final String LEG_IND_PREFIX = "L";
-    public static final String TABLE_IND_PREFIX = "T";
-    public static final String SCREWDRIVER_IND_PREFIX = "S";
-    public static final String PEN_IND_PREFXI = "P";
+    public static final String LEG_IND_PREFIX = "indL";
+    public static final String TABLE_IND_PREFIX = "indT";
+    public static final String CONNECTOR_IND_PREFIX = "indC";
+    public static final String PEN_IND_PREFIX = "indP";
+    public static final String CONTAINER_IND_PREFIX = "indR";
     // functions to get sequential individual names
-    private static int legCnt = 0, tableCnt = 0, screwDriverCnt = 0, penCnt = 0;
+    private static int legCnt = 0, tableCnt = 0, connectorCnt = 0, penCnt = 0, containerCnt = 0;
     private static String getNewLegInd(){
         return LEG_IND_PREFIX + legCnt++;
     }
     private static String getNewTableInd(){
         return TABLE_IND_PREFIX + tableCnt++;
     }
-    private static String getNewScrewDriverInd(){
-        return SCREWDRIVER_IND_PREFIX + screwDriverCnt++;
+    private static String getNewConnectorInd(){
+        return CONNECTOR_IND_PREFIX + connectorCnt++;
     }
     private static String getNewPenInd(){
-        return PEN_IND_PREFXI + penCnt++;
+        return PEN_IND_PREFIX + penCnt++;
+    }
+    private static String getNewContainerInd(){
+        return CONTAINER_IND_PREFIX + containerCnt++;
     }
 
     public ConnectObjectScene() {}
@@ -49,10 +53,10 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         double connection = aFeature.distance( newFeature);
         if ( connection <= CONNECTED_THRESHOLD) {
             double degree = 1 - (Math.abs( connection) / CONNECTED_THRESHOLD);
-            // [0.000000000000001,0.999999999999999] set with resolution ROLE_SHOULDER_RESOLUTION = "#.####"; and ROLE_SHOULDER_RESOLUTION = "#.####";
-            if ( degree >= 0.000000000000001 & degree <= .999999999999999)
+            // [0.000000000000001,0.999999999999999] set with resolution ROLE_SHOULDER_RESOLUTION = "#.####"
+            //if ( degree >= 0.000000000000001 & degree <= .999999999999999)
                 return new SpatialRelation(anObject.getObject(), CONNECTED, newObject.getObject(), degree);
-            else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
+            //else System.err.println("Error on computing fuzzy degree: 1-" + connection + "/" + CONNECTED_THRESHOLD + "=" + degree);
         }
         return null;
     }
@@ -67,16 +71,15 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
     }
     public void addConnector( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
-        this.addObject( ConnectObjectScene.CONNECTOR, ConnectObjectScene.getNewScrewDriverInd(), degree, feature);
+        this.addObject( ConnectObjectScene.CONNECTOR, ConnectObjectScene.getNewConnectorInd(), degree, feature);
     }
     public void addContainer( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
-        this.addObject( ConnectObjectScene.CONTAINER, ConnectObjectScene.getNewScrewDriverInd(), degree, feature);
+        this.addObject( ConnectObjectScene.CONTAINER, ConnectObjectScene.getNewContainerInd(), degree, feature);
     }
     public void addPen( double xPose, double yPose, double degree){
         Point2 feature = new Point2(xPose,yPose);
         this.addObject( ConnectObjectScene.PEN, ConnectObjectScene.getNewPenInd(), degree, feature);
     }
-
 
 }

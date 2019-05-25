@@ -11,6 +11,8 @@ import java.util.*;
 
 public class LogReader {
 
+    private double OBJECT_TYPE_DEGREE = 1; // const degree
+
     private static final String SEP = ", ";
     private static final String SEP_LINE = ";"; // indeed ";\n"
 
@@ -29,13 +31,13 @@ public class LogReader {
     public LogReader(String filePath) {
         System.out.println("Loading scene from file " + filePath);
         List<List<String>> logs = parseCSV(filePath);
-        System.out.println("\t\t   CSV fields: " + fields);
+        //System.out.println("\t\t   CSV fields: " + fields);
 
         List<Set<Pair<String, Point2>>> scenesMap = formatData(logs);
-        System.out.println("\t\t    scene map: " + scenesMap);
+        //System.out.println("\t\t    scene map: " + scenesMap);
 
         parsedScenes = parseScenes( scenesMap);
-        System.out.println("\t\tparsed scenes: " + parsedScenes);
+        //System.out.println("\t\tparsed scenes: " + parsedScenes);
     }
 
     private List<PerceptionBase> parseScenes(List<Set<Pair<String, Point2>>> scenesMap) {
@@ -43,17 +45,19 @@ public class LogReader {
         for( Set<Pair<String,Point2>> s : scenesMap){
             ConnectObjectScene scene = new ConnectObjectScene();
             for( Pair<String,Point2> o : s){
-                if ( o.getKey().equals( TABLE_FILED))
-                    scene.addTable( o.getValue().getX(), o.getValue().getY(), 1);
-                else if ( o.getKey().equals( LEG_FILED))
-                    scene.addLeg( o.getValue().getX(), o.getValue().getY(), 1);
-                else if ( o.getKey().equals( PEN_FILED))
-                    scene.addPen( o.getValue().getX(), o.getValue().getY(), 1);
-                else if ( o.getKey().equals( CONTAINER_FILED))
-                    scene.addContainer( o.getValue().getX(), o.getValue().getY(), 1);
-                else if ( o.getKey().equals( CONNECTOR_FILED))
-                    scene.addConnector( o.getValue().getX(), o.getValue().getY(), 1); // TODO adjust degree
-                else System.err.println( " Not known key for " + o);
+                if ( o.getValue() != null) {
+                    if (o.getKey().equals(TABLE_FILED))
+                        scene.addTable(o.getValue().getX(), o.getValue().getY(), OBJECT_TYPE_DEGREE);
+                    else if (o.getKey().equals(LEG_FILED))
+                        scene.addLeg(o.getValue().getX(), o.getValue().getY(), OBJECT_TYPE_DEGREE);
+                    else if (o.getKey().equals(PEN_FILED))
+                        scene.addPen(o.getValue().getX(), o.getValue().getY(), OBJECT_TYPE_DEGREE);
+                    else if (o.getKey().equals(CONTAINER_FILED))
+                        scene.addContainer(o.getValue().getX(), o.getValue().getY(), OBJECT_TYPE_DEGREE);
+                    else if (o.getKey().equals(CONNECTOR_FILED))
+                        scene.addConnector(o.getValue().getX(), o.getValue().getY(), OBJECT_TYPE_DEGREE);
+                    else System.err.println(" Not known key for " + o);
+                }
             }
             scenes.add( scene);
         }
@@ -61,6 +65,7 @@ public class LogReader {
     }
 
     private List< Set< Pair< String,Point2>>> formatData(List<List<String>> logs) {
+        int emptyPerceptionCnt = 0;
         List< Set< Pair< String,Point2>>> scenesMap = new ArrayList<>();
         if (logs != null){
             String warningLog = "";
@@ -75,7 +80,9 @@ public class LogReader {
                         unformattedKey = unformattedKey.replaceAll("\\d", "");
                         // take first word
                         int j = unformattedKey.indexOf(' ');
-                        String key = unformattedKey.substring(0, j);
+                        String key = unformattedKey;
+                        if( j > 1)
+                            key = unformattedKey.substring(0, j);
                         String o1 = "", o2 = "";
                         try {
                             o1 = scenesCsv.get( i++);
@@ -84,18 +91,25 @@ public class LogReader {
                             objTypePose.add(new Pair<>(key, value));
                         } catch (NumberFormatException e){
                             warningLog1 += ", " + unformattedKey + "(\'" + o1 + ", " + o2  + "\')";
+                            break;
                         }
-                    } catch (NumberFormatException e){
-                        System.err.println( "ERROR: impossible to parse " + scenesCsv);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                        System.err.println( "ERROR: [idx " + w + "] impossible parse " + scenesCsv + ", scene \'" +  i + "\' discarded.");
+                        break;
                     }
                 }
-                scenesMap.add( objTypePose);
-                if ( ! warningLog1.isEmpty())
+                if ( ! warningLog1.isEmpty()) {
+                    objTypePose.add( new Pair<>( "Empty-Perception" + emptyPerceptionCnt, null));
+                    //scenesMap.add(objTypePose);
                     warningLog += "\t\t[" + w + "]" + warningLog1 + "\n";
+                }
+                if ( ! objTypePose.isEmpty())
+                    scenesMap.add( objTypePose);
                 w++;
             }
             if ( ! warningLog.isEmpty())
-                System.err.println( "WARNING: empty object\n" + warningLog);
+                System.err.println( "WARNING: empty object pose\n" + warningLog);
         }
         return scenesMap;
     }
