@@ -74,6 +74,8 @@ public class MemorySITCSV {
         new MemorySITCSV( DATA_PATH, memory);
 
         System.out.println( memory.getTimings());
+        System.out.println( "----------------------------------------------");
+        System.out.println( "----------------------------------------------");
         memory.accessMemory().getTbox().show();
     }
 }
