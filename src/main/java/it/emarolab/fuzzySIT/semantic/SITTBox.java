@@ -726,7 +726,7 @@ public class SITTBox
         f.run();
     }
 
-    public Set< Pair< SceneHierarchyVertex,SceneHierarchyVertex>> simplify() { // remove equivalent nodes (i.e., with double high implication)
+    public Set< Pair< SceneHierarchyVertex,SceneHierarchyVertex>> simplify(double minImplicationDegree) { // remove equivalent nodes (i.e., with double high implication)
         Set< Pair< SceneHierarchyVertex, SceneHierarchyVertex>> toRemove = new HashSet<>();
         for ( SceneHierarchyVertex vertex1 : hierarchy.vertexSet()) {
             if (!toRemove.contains(vertex1)){
@@ -737,7 +737,7 @@ public class SITTBox
                         if ( edge1 != null & edge2 != null) {
                             double w1 = getHierarchy().getEdgeWeight(edge1);
                             double w2 = getHierarchy().getEdgeWeight(edge2);
-                            if (w1 >= 0.9999 & w2 >= 0.9999) { // todo make it constant
+                            if (w1 >= minImplicationDegree & w2 >= minImplicationDegree) { // todo make it constant
                                 Pair<SceneHierarchyVertex, SceneHierarchyVertex> outPair;
                                 if ( vertex1.getMemoryScore() > vertex2.getMemoryScore())
                                     outPair = new Pair<>( vertex2, vertex1);

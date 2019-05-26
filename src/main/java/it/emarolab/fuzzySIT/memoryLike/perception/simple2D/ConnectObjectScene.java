@@ -53,6 +53,7 @@ public class ConnectObjectScene extends PerceptionBase<Point2> {
         double connection = aFeature.distance( newFeature);
         if ( connection <= CONNECTED_THRESHOLD) {
             double degree = 1 - (Math.abs( connection) / CONNECTED_THRESHOLD);
+            // todo check issue
             // [0.000000000000001,0.999999999999999] set with resolution ROLE_SHOULDER_RESOLUTION = "#.####"
             //if ( degree >= 0.000000000000001 & degree <= .999999999999999)
                 return new SpatialRelation(anObject.getObject(), CONNECTED, newObject.getObject(), degree);

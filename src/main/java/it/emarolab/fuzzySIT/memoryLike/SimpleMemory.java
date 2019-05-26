@@ -26,9 +26,9 @@ public class SimpleMemory extends MemoryInterface{
     private static final double LEARNED_SCORE = .5; // initial score, percentage of max score [0,1]
 
     private static final double ENCODE_REINFORCE = 10;//10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
-    private static final double STRUCTURE_REINFORCE = 0; // reinforce factor for min edge fuzzy degree [1,inf)
 
     private static int sceneCnt = 0;
+    private static boolean REMOVE_FORGET = false;
 
     public SimpleMemory(SITTBox tbox) {
         super(tbox);
@@ -94,62 +94,19 @@ public class SimpleMemory extends MemoryInterface{
     private void updateScorePolicy(SceneHierarchyVertex recognisedScene, double recognisedValue) {
         // TODO adjust and validate
         double score = recognisedScene.getMemoryScore();
-        if ( recognisedScene.getMemoryScore() > 0) { // not froze node
-            // reinforce for re-stored or re-retrieved experiences
-            double similarity = getAbox().getSimilarity( recognisedScene);
-            /*if ( similarity >= 1)
-                similarity = 0.99; // consolidate always something*/
-
-            /*double reconsiledate = recognisedValue;
-            if ( reconsiledate < similarity)
-                reconsiledate = similarity;*/
-
-            score += ENCODE_REINFORCE * recognisedValue;// * similarity; // * (1 - similarity); // reconsiledate
-        } // else score freeze (i.e., experience to remove)
+        if ( recognisedScene.getMemoryScore() > 0) // not froze node
+            score += ENCODE_REINFORCE * recognisedValue; // reinforce for re-stored or re-retrieved experiences
+        // else score freeze (i.e., experience to remove)
         recognisedScene.setMemoryScore( score);
     }
 
     @Override
     public void consolidate() {
-        ListenableGraph<SceneHierarchyVertex, SceneHierarchyEdge> h = getTbox().getHierarchy();
-        // TODO adjust and validate
-        // reinforce based on graph edges
-        int cnt = 0;
-        double edgeMeanTarget = 0;
-        double edgeMeanSource = 0;
-        for( SceneHierarchyVertex vertex : h.vertexSet()) {
-            if ( vertex.getMemoryScore() > 0) { // not froze node
-                double edgeConsolidation = 0;
+        // TODO reinforce score based on graph edges and nodes
 
-                double edgeMin = Double.POSITIVE_INFINITY;//edgeMeanTarget = 0; int cnt = 0;
-                for (SceneHierarchyEdge edge : h.edgesOf( vertex)) {
-                    if (h.getEdgeSource( edge).equals( vertex)) {
-                        double score = h.getEdgeTarget(edge).getMemoryScore();
-                        double weight = h.getEdgeWeight(edge);
+        //Set<Pair<SceneHierarchyVertex, SceneHierarchyVertex>> removed = getTbox().simplify();
+        //System.out.println( "\tsimplifying " + removed);
 
-                        //edgeConsolidation += wight;
-
-                        //if ( edgeMin < wight)
-                        //    edgeMin = wight;
-                        if (weight > 0){
-                            edgeMeanTarget += score * weight;
-                            cnt++;
-                        }
-                    }
-                }
-                if (edgeMeanTarget > 0) //edgeConsolidation > 0 //edgeMeanTarget > 0 & cnt > 0)//(edgeMin != Double.POSITIVE_INFINITY)//
-                    vertex.setMemoryScore(vertex.getMemoryScore() + STRUCTURE_REINFORCE * edgeMeanTarget);
-                    //vertex.setMemoryScore(vertex.getMemoryScore() + STRUCTURE_REINFORCE * edgeConsolidation);
-                    //vertex.setMemoryScore(vertex.getMemoryScore() * STRUCTURE_REINFORCE * edgeMeanTarget);
-                    //vertex.setMemoryScore(vertex.getMemoryScore() * STRUCTURE_REINFORCE * edgeMeanTarget / cnt);
-                    //vertex.setMemoryScore(vertex.getMemoryScore() + STRUCTURE_REINFORCE * edgeMeanTarget * cnt);
-                    //vertex.setMemoryScore(vertex.getMemoryScore() * STRUCTURE_REINFORCE * edgeMin);
-            }
-        }
-
-
-        Set<Pair<SceneHierarchyVertex, SceneHierarchyVertex>> removed = getTbox().simplify();
-        System.out.println( "\tsimplifying " + removed);
         normalizeScoreConsolidating();
     }
     public void normalizeScoreConsolidating(){
@@ -178,8 +135,9 @@ public class SimpleMemory extends MemoryInterface{
             }
         }
 
-        //for( SceneHierarchyVertex scene : forgotten)
-        //    getTbox().removeScene( scene);
+        if( REMOVE_FORGET)
+            for( SceneHierarchyVertex scene : forgotten)
+                getTbox().removeScene( scene);
         return forgotten;
     }
 }
