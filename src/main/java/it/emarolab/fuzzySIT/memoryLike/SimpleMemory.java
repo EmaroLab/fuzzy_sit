@@ -28,7 +28,12 @@ public class SimpleMemory extends MemoryInterface{
     private static final double ENCODE_REINFORCE = 10;//10; // reinforce factor for re-stored or re-retrieved experience [1,inf)
 
     private static int sceneCnt = 0;
-    private static boolean REMOVE_FORGET = false;
+    
+    // actually remove node if true. 
+    // Otherwise the node remains but it is not consolidated (i.e., frozen). 
+    // REMARK: with false, SIT performances do not benefit from forgetting, 
+    //         with true the Graph would not show forgotten nodes.
+    private static boolean REMOVE_FORGET = false; 
 
     public SimpleMemory(SITTBox tbox) {
         super(tbox);
