@@ -3,7 +3,7 @@ package it.emarolab.fuzzySIT.memoryLike.simulateCSV;
 import it.emarolab.fuzzySIT.memoryLike.perception.PerceptionBase;
 import it.emarolab.fuzzySIT.memoryLike.perception.simple2D.ConnectObjectScene;
 import it.emarolab.fuzzySIT.memoryLike.perception.simple2D.Point2;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,8 +28,10 @@ public class LogReader {
     private List< String> fields = new ArrayList<>();
     private List< PerceptionBase> parsedScenes; // one item for each instant of time
 
+
     public LogReader(String filePath) {
-        System.out.println("Loading scene from file " + filePath);
+    }
+    /*    System.out.println("Loading scene from file " + filePath);
         List<List<String>> logs = parseCSV(filePath);
         //System.out.println("\t\t   CSV fields: " + fields);
 
@@ -113,7 +115,7 @@ public class LogReader {
         }
         return scenesMap;
     }
-
+*/
     private List<List<String>> parseCSV(String filePath) {
         try {
             List<List<String>> records = new ArrayList<>();

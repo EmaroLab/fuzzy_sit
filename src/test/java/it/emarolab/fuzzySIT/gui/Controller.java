@@ -1,6 +1,6 @@
 package it.emarolab.fuzzySIT.gui;
 
-
+/*
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.model.mxCell;
@@ -277,10 +277,10 @@ public class Controller
                 if ( e.getButton() == MouseButton.PRIMARY){
                     if ( closeToOther){
                         // todo show properties!!!!!
-                        /*Alert alert = new Alert(Alert.AlertType.INFORMATION, "Point: " + closedObject, ButtonType.OK);
-                        alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
-                        alert.setResizable( true);
-                        alert.show();*/
+                        // Alert alert = new Alert(Alert.AlertType.INFORMATION, "Point: " + closedObject, ButtonType.OK);
+                        // alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
+                        // alert.setResizable( true);
+                        // alert.show();
 
                         Stage dialog = new Stage();
                         dialog.initStyle(StageStyle.DECORATED);
@@ -455,16 +455,15 @@ public class Controller
                             dialog.setScene(scene);
                             dialog.show();
 
-                /*
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION,
-                                    "Scene description: " + NEW_LINE +
-                                            "Name :" + g.getScene() + NEW_LINE +
-                                            "Number of Object: " + g.getObjectDistribution() + NEW_LINE +
-                                            "Type of Objects: " + g.getObjectType() + NEW_LINE +
-                                            "Definition: " + g.getDefinition().toGuiString(), ButtonType.OK);
-                            alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
-                            alert.setResizable( true);
-                            alert.show();*/
+                            // Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                            //         "Scene description: " + NEW_LINE +
+                            //                 "Name :" + g.getScene() + NEW_LINE +
+                            //                 "Number of Object: " + g.getObjectDistribution() + NEW_LINE +
+                            //                 "Type of Objects: " + g.getObjectType() + NEW_LINE +
+                            //                 "Definition: " + g.getDefinition().toGuiString(), ButtonType.OK);
+                            // alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
+                            // alert.setResizable( true);
+                            // alert.show();
                         });
 
 
@@ -626,3 +625,4 @@ public class Controller
         }
     }
 }
+*/

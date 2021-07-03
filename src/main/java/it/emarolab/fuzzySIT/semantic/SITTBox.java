@@ -14,7 +14,7 @@ import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.semantic.axioms.SpatialProperty;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.ListenableDirectedWeightedGraph;
@@ -726,6 +726,7 @@ public class SITTBox
         f.run();
     }
 
+    /*
     public Set< Pair< SceneHierarchyVertex,SceneHierarchyVertex>> simplify(double minImplicationDegree) { // remove equivalent nodes (i.e., with double high implication)
         Set< Pair< SceneHierarchyVertex, SceneHierarchyVertex>> toRemove = new HashSet<>();
         for ( SceneHierarchyVertex vertex1 : hierarchy.vertexSet()) {
@@ -754,4 +755,5 @@ public class SITTBox
             removeScene( r.getKey());
         return toRemove; // return list of classes (removed, equivalent)
     }
+    */
 }

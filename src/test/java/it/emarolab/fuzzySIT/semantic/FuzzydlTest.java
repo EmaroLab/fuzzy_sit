@@ -1,6 +1,5 @@
 package it.emarolab.fuzzySIT.semantic;
 
-import fuzzydl.AllInstancesQuery;
 import fuzzydl.ConfigReader;
 import fuzzydl.KnowledgeBase;
 import fuzzydl.exception.FuzzyOntologyException;
@@ -9,22 +8,17 @@ import fuzzydl.parser.Parser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.*;
 import java.util.*;
 import fuzzydl.*;
 import fuzzydl.exception.*;
-import fuzzydl.milp.*;
 import fuzzydl.parser.*;
-import fuzzydl.util.*;
-import it.emarolab.fuzzySIT.FuzzySITBase;
 
-public class FuzzydlTest
-{
+public class FuzzydlTest {
     public static void main(String[] args) throws FuzzyOntologyException,
             InconsistentOntologyException,
             IOException, ParseException {
 
-        ConfigReader.loadParameters( "src/main/resources/FuzzyDL_CONFIG", new String[0]);
+        ConfigReader.loadParameters( "src/test/resources/fuzzyDL_CONFIG", new String[0]);
         Parser parser = new Parser(new FileInputStream("src/test/resources/fuzzyDlTest.txt"));
         parser.Start();
 

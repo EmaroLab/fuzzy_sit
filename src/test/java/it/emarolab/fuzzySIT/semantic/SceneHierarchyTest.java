@@ -238,7 +238,7 @@ public class SceneHierarchyTest {
         r = new SITABox(h, objects, relations);
         h.learn( "Scene1", r);
 
-/*
+
         System.out.println("-------------------------  S1   ------------------------");
         // create S1 and recognise it
         formatS1();
@@ -325,7 +325,7 @@ public class SceneHierarchyTest {
         h.show();
         // saved the augmented ontology
         h.saveTbox("src/test/resources/learnedTest.fuzzydl");
-        */
+
     }
 
 

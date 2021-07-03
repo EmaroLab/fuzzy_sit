@@ -3,7 +3,7 @@ package it.emarolab.fuzzySIT.memoryLike;
 import it.emarolab.fuzzySIT.semantic.SITTBox;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.semantic.hierarchy.SceneHierarchyVertex;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 import org.jgrapht.ListenableGraph;
 
 import java.util.HashSet;
