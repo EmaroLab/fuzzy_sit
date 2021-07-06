@@ -112,7 +112,7 @@ Temporary Items
 
 catalog-v001.xml
 
-.log
-.sitLearned.tmp
+*.log
+*.sitLearned.tmp
 !FuzzyDL.jar
-.carlolog
+*.carlolog

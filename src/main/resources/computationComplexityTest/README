@@ -1,0 +1,31 @@
+Logs are based on "A_B_C_D" where:
+    - A is the number of elements in each scene
+    - B is the number of tested scenes
+    - C is the number of element types in the ontology
+    - D is the number of relations in the ontology
+--------------------------------------------------------
+
+The scenes evaluated has not a meaningfull semantic and they have been generated randomly.
+
+We attempt to recognise each generated scene.
+We learn each generated scene.
+
+The scene has 
+   - A elements (spanning in {e1, e2, .., eA}) each of which are of a type chosen randomly among the {t1,t2,...,tC} items.
+   - two conseguitive elements has related with
+            . `e1 before e2` and 
+            . `e2 after e1`
+     For simulations with D>2 another relation ri (spanning in {before,after,r3,r4,...,rD}) is added among two
+     consecutive entities (e.g., <e1,e2>, <e2,e3>, <e3,e4>, etc.) with a probability of 50%.
+
+
+---------------------------
+(to review) OUTCOMES
+
+ - relation weight more on computations than types
+ - add a memory items implies an increase of x% on learning
+ - add a memory items implies an increase of x% on recognition
+ - STD deviation on average is of ...
+ - adding elements to scene implies ....
+ - .... other ???
+ - [to review] X-axis on Learning should go from 0 to 1 
