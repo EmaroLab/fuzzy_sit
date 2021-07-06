@@ -1,0 +1,5 @@
+#T-box file: src/main/resources/ontologies/learnedAssembledTable.fuzzydl
+#To generate: CsvGuidedCarloListener --> FK[0.0] = Σ → [	Knife:{Left(0.1), Behind(0.2), Right(0.7), Front(0.2)}	Fork:{Right(0.1), Front(0.1), Behind(0.2), Left(0.7)}	Glass:{Front(0.1), Right(0.1), Behind(0.1), Left(0.1)}	Plate:{Right(0.1), Front(0.1), Left(0.1), Behind(0.1)} ]
+#Hierarchy: ([FK[0.0], FGK[0.0], FPGK[0.0]], [1.0=(FGK[0.0],FK[0.0]), 1.0=(FPGK[0.0],FK[0.0]), 1.0=(FPGK[0.0],FGK[0.0])])
+#Starting thread 0 at time:1625578270769
+
