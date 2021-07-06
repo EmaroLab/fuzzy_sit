@@ -53,7 +53,6 @@ Now you can test FuzzyDL reasoner by referring to the `README` file of the [Fuzz
 Instead, to test FuzzySIT, clone it and (eventually) checkout in a relevant branch
 ```sh
 git clone https://github.com/TheEngineRoom-UniGe/fuzzy_sit.git
-git checkout ComputationTest
 ```
 
 To compile it go in the `fuzzy_sit` folder just cloned and run
@@ -68,7 +67,7 @@ Then compile it with
 
 Finally, run the [`SceneHierarchyTest`](https://github.com/EmaroLab/fuzzy_sit/blob/master/src/test/java/it/emarolab/fuzzySIT/semantic/SceneHierarchyTest.java) example with
 ```sh
-
+./gradlew runExample
 ```
 If your machine does not have a graphical user interface, the example might fail at the end of the script 
 

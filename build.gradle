@@ -19,5 +19,5 @@ dependencies {
 
 task runExample(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
-    main = "it.emarolab.fuzzySIT.example.SceneHierarchyTest"
+    main = "it.emarolab.runnableSITutility.example.SITExample"
 }

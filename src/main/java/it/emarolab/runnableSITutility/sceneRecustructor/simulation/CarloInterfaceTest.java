@@ -82,7 +82,7 @@ class CarloImpl
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
         String date = sdf.format(cal.getTime());
-        String csvFilePath = CarloInterfaceTest.BASE_PATH + "log/" + date + ".carlolog";
+        String csvFilePath = CarloInterfaceTest.BASE_PATH + "log/" + date + ".log";
         listener = new ListenerImpl( csvFilePath);
         return listener;
     }
