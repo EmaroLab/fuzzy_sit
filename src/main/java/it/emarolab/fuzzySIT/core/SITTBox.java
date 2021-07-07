@@ -156,7 +156,7 @@ public class SITTBox
     }
 
     // called in constructor, it reads the ontology from file.
-    private KnowledgeBase readFromFile(String tboxPath, String confFile){
+    private synchronized KnowledgeBase readFromFile(String tboxPath, String confFile){
         long time = System.currentTimeMillis();
         syntaxFile = tboxPath;
         configurationFile = confFile;

@@ -5,6 +5,7 @@ import it.emarolab.fuzzySIT.core.SITTBox;
 import it.emarolab.fuzzySIT.core.SigmaCounters;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * The container of a fuzzy logic axiom for SIT spatial properties.
@@ -162,5 +163,4 @@ public class SpatialProperty
                         "(?<=[A-Za-z])(?=[^A-Za-z])"
                 ), " "); // changes on " " will effects also splitCamelCase()
     }
-
 }

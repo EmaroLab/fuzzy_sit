@@ -1,5 +1,6 @@
 package it.emarolab.runnableSITutility.sceneRecustructor.simulation;
 
+import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.runnableSITutility.sceneRecustructor.MonteCarloInterface;
 import it.emarolab.fuzzySIT.core.SITTBox;
 
@@ -82,7 +83,7 @@ class CarloImpl
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
         String date = sdf.format(cal.getTime());
-        String csvFilePath = CarloInterfaceTest.BASE_PATH + "log/" + date + ".log";
+        String csvFilePath = FuzzySITBase.RESOURCES_PATH + "sceneReconstructionLog/" + date + ".log";
         listener = new ListenerImpl( csvFilePath);
         return listener;
     }
