@@ -418,7 +418,9 @@ public class SITTBox
                 this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
             saveTbox( syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
             tbox = readFromFile( syntaxLearnedFile, configurationFile);
-            kb = tbox.clone();
+            synchronized (this) {
+                kb = tbox.clone();
+            }
             kb.solveKB();
             time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
 
