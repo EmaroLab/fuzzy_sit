@@ -22,9 +22,8 @@ public class ComputationalComplexityTest {
 
     public static void main(String[] args) {
         // prepare for logging
-        Logger mainLogger = new Logger("main");
+        Logger mainLogger = new Logger("main", true);
         System.out.println("Logging in: " + Logger.RELATIVE_PATH);
-        // TODO disable printing
 
         mainLogger.log("-------------------- PARAMETERS --------------------------");
         // understand the parameter
@@ -40,7 +39,6 @@ public class ComputationalComplexityTest {
                 + (params.size() * elementsSize * sceneSize) + " tests with parameters:");
         for (int i = 0; i < params.size(); i++)
             mainLogger.log("  " + (i + 1) + ".*(" + elementsSize + "." + sceneSize + "). " + params.get(i));
-        mainLogger.flush();
 
         mainLogger.log("------------------- CSV SETTING ---------------------------");
         mainLogger.log(CSVData.getHeader());
@@ -122,7 +120,7 @@ class SimulationTask implements Runnable {
         this.globalCnt = globalCnt;
         this.parameter = parameter;
         this.tasks = tasks;
-        this.logger = new Logger(parameter.getTestLabel());
+        this.logger = new Logger(parameter.getTestLabel(), false);
         this.mainLogger = mainLogger;
     }
 
@@ -242,8 +240,6 @@ class SimulationTask implements Runnable {
         mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended");
 
         logger.close();
-        mainLogger.flush();
-        mainLogger.flush();
         synchronized (tasks) {
             tasks.remove(this);
         }
@@ -257,3 +253,6 @@ class SimulationTask implements Runnable {
         return ThreadLocalRandom.current().nextInt(0, max);
     }
 }
+
+
+

@@ -57,6 +57,7 @@ class CSVData{
 public class Logger {
     private final boolean VERBOSE = false;  // print on standard output
     private final String logPath;
+    private boolean flushAlways;
     private FileWriter logWriter;
     private static FileWriter csvWriter;
     public static final String BASE_PATH, csvPath, RELATIVE_PATH;
@@ -72,10 +73,11 @@ public class Logger {
         }
     }
 
-    public Logger(String name){
+    public Logger(String name, boolean flush){
         this.logPath = RELATIVE_PATH + name + ".log";
         try {
             this.logWriter = new FileWriter(createFile(this.logPath), true);
+            flushAlways = flush;
         } catch (IOException e) {
             e.printStackTrace();
             logError(e, "Error while opening file " + logPath);
@@ -94,6 +96,8 @@ public class Logger {
             this.logWriter.append(formatted).append(System.lineSeparator());
             if(VERBOSE)
                 System.out.println(formatted);
+            if(flushAlways)
+                this.flush();
         } catch (IOException e) {
             e.printStackTrace();
             logError(e, "Error while writing on file " + logPath);
@@ -160,7 +164,7 @@ public class Logger {
     }
 
     public synchronized static void logError(Exception e, String contents){
-        Logger logger = new Logger("ERROR-" + System.currentTimeMillis());
+        Logger logger = new Logger("ERROR-" + System.currentTimeMillis(), false);
         if(!contents.isEmpty())
             logger.log(contents);
         logger.log(e.getCause() + "");
