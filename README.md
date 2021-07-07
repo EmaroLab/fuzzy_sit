@@ -83,14 +83,38 @@ To run other examples or to generate a jar of FuzzySIT as a library for your dev
 
 # Runnable: Test, Extensions and Examples
 
-. `FuzzydlTest`
-. `SITExample`
-. `GUI`
-. `SceneHierarchyTest`
-. `MemoryTest`
-. `MonteCarlo`
-. `ComputationComplexity`
+### `FuzzydlTest`
+### `SITExample`
+### `GUI`
+### `SceneHierarchyTest`
+### `MemoryTest`
+### `MonteCarlo`
+### `ComputationComplexity` 
+You can run it with the command
+```sh
+gradle clean runComputationTest -Pconcepts='2,6' -Prelations='2,4' -Pscenes='2,2,2' -Pelements='2,3,4' -PtasksLimit='2'
+```
+where
+ - `concepts` sets the number of possible types of object in the ontology,
+ - `relations` sets the number of possible relations among objects in the ontology,
+ - `scenes` sets the number of learning and recognition phase to perform (i.e., number of memory items at the end of the evaluation`),
+ - `elements` sets the number of objects in each scene to evaluate. From this the number of relations in a scene is derived having, between each object added consegutively, (i) two relations plus (2) another relation with a probability of 0.5.
+ - `tasksLimit` sets the maximum number of threads to be used concurrently for the simulation.
 
+The test is performed for each combination of `concepts`, `relations`, `scenes` and `elements`. 
+The results are store as `csv` files in the folder `src/main/java/resources/ComputationComplexityTest/log`.
+CSV data is all express in millisecond or integer (i.e., for indices) and arranged in columns ordered as
+1. An ordered identified based on the creation timestamp,
+2. A string identifying the ontology complexity (i.e., `C-D`),
+3. The Number of concepts in the ontology,
+4. The Number of relations in the ontology,
+5. Number of elements in the scene,
+6. Number of roles in the scene,
+7. Number of items in the memory,
+8. The recognition time before having learned a new scene,
+9. The learning time,
+10. The recognition time after having learned a new scene,
+11. The total computation time.
 
 # Ontology Setup and API Structure
 ...

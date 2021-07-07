@@ -8,6 +8,7 @@ class RawParameters {
 
     protected List<Integer> elements = new ArrayList<>(), scenes = new ArrayList<>(),
             concepts = new ArrayList<>(), relations = new ArrayList<>();
+    protected Integer taskBufferSize = null;
 
     public RawParameters() {
     }
@@ -35,7 +36,7 @@ class RawParameters {
                 ", -(P)scenes=" + scenes +
                 ", -(P)concepts=" + concepts +
                 ", -(P)relations=" + relations +
-                '}';
+                ", -(P)taskBufferSize=" + taskBufferSize + '}';
     }
 }
 
@@ -98,14 +99,17 @@ public class Parameter {
         RawParameters out = new RawParameters();
         try {
             for (String arg : args) {
-                if( out.concepts.isEmpty())
-                    out.concepts = parseRawParameter("-Pconcepts", arg);  // "-Pconcept" is defined in build.gradle
-                if( out.relations.isEmpty())
-                    out.relations = parseRawParameter("-Prelations", arg);  // "-Prelations" is defined in build.gradle
-                if(out.elements.isEmpty())
-                    out.elements = parseRawParameter("-Pelements", arg);  // "-Pelements" is defined in build.gradle
-                if(out.scenes.isEmpty())
-                    out.scenes = parseRawParameter("-Pscenes", arg);  // "-Pscenes" is defined in build.gradle
+                // identifiers `-P....` are defined and documented in the `build.gradle` file.
+                if( arg.contains("-Pconcepts="))
+                    out.concepts = parseRawParameter("-Pconcepts", arg);
+                if( arg.contains("-Prelations="))
+                    out.relations = parseRawParameter("-Prelations", arg);
+                if( arg.contains("-Pelements="))
+                    out.elements = parseRawParameter("-Pelements", arg);
+                if( arg.contains("-Pscenes="))
+                    out.scenes = parseRawParameter("-Pscenes", arg);
+                if( arg.contains("-PtasksLimit="))
+                    out.taskBufferSize = parseRawParameter("-PtasksLimit", arg).get(0);
             }
 
             if(out.concepts.isEmpty() || out.relations.isEmpty() || out.elements.isEmpty() || out.scenes.isEmpty())
