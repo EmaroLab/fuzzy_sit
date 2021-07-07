@@ -286,32 +286,37 @@ public class SITTBox
             String[] split = SpatialProperty.splitCamelCase( s);
             // get right shoulder limits
             String atLeastX = restrictions.get(s).replace(REPLACE_DOUBLE_POINT,".");
-            double b = Double.valueOf( atLeastX.replace(ROLE_ATLEAST, ""));
+            double b = Double.parseDouble( atLeastX.replace(ROLE_ATLEAST, ""));
             assert split != null;
             def.add( split[0],split[1], b);
         }
         return def;
     }
     // it queries to the reason the subsunction between scene in order to create the class hierarchy graph.
-    private void updateEdges(KnowledgeBase kb) // it perform queries
-            throws FuzzyOntologyException {
-        for( SceneHierarchyVertex v1 : hierarchy.vertexSet()){
-            for( SceneHierarchyVertex v2 : hierarchy.vertexSet()){
-                if ( ! v1.getScene().equals( v2.getScene())){
-                    Query q = new MinSubsumesQuery(
-                            kb.getConcept( v1.getScene()),
-                            kb.getConcept( v2.getScene()),
-                            SubsumptionQuery.LUKASIEWICZ);
-                    Solution solution = q.solve( kb);
-                    log( FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + v1 + " ⊂ " + v2 + " ("
-                            + solution.getSolution() + ")");
-                    if ( solution.getSolution() > 0) {
-                        SceneHierarchyEdge e = hierarchy.addEdge(v2, v1);
-                        if( e != null)
-                            hierarchy.setEdgeWeight(e, solution.getSolution());
+    public void updateEdges(KnowledgeBase kb) { // it perform queries
+        try {
+            long time = System.currentTimeMillis();
+            for (SceneHierarchyVertex v1 : hierarchy.vertexSet()) {
+                for (SceneHierarchyVertex v2 : hierarchy.vertexSet()) {
+                    if (!v1.getScene().equals(v2.getScene())) {
+                        Query q = new MinSubsumesQuery(
+                                kb.getConcept(v1.getScene()),
+                                kb.getConcept(v2.getScene()),
+                                SubsumptionQuery.LUKASIEWICZ);
+                        Solution solution = q.solve(kb);
+                        log(FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + v1 + " ⊂ " + v2 + " ("
+                                + solution.getSolution() + ")");
+                        if (solution.getSolution() > 0) {
+                            SceneHierarchyEdge e = hierarchy.addEdge(v2, v1);
+                            if (e != null)
+                                hierarchy.setEdgeWeight(e, solution.getSolution());
+                        }
                     }
                 }
             }
+            log( time, "Hierarchy computed: " + hierarchy);
+        } catch (FuzzyOntologyException e) {
+            e.printStackTrace();
         }
     }
     // called on construction it queries all spatial classes as: Δ ⊂ SpatialObject
@@ -377,59 +382,65 @@ public class SITTBox
      * @param representation the scene representation to learn.
      * @return the learned node not structured in the memory graph
      */
-    public SceneHierarchyVertex learn(String newSceneName, SITABox representation){
-        try {
+    public SceneHierarchyVertex learn(String newSceneName, SITABox representation) {
+        SceneHierarchyVertex learned = rawLearning(newSceneName, representation);
+        KnowledgeBase kb = closeReopen(newSceneName, representation, this); // solve FuzzyDL bug
+        updateEdges(kb); // structuring
+        return learned;
+    }
 
-            if ( scenes.contains( newSceneName)){
-                System.err.println( newSceneName + " already defined !!!");
-                return null;
-            }
-
-            KnowledgeBase kb = tbox.clone();
-
-            // add new base scene
-            long time = System.currentTimeMillis();
-            scenes.add( newSceneName);
-            tbox.defineAtomicConcept( newSceneName, kb.getConcept(CONCEPT_SCENE_TOP), getQueryLogic(),1);
-            kb.defineAtomicConcept( newSceneName, kb.getConcept(CONCEPT_SCENE_TOP), getQueryLogic(),1);
-            time = log( time, "adding new " + newSceneName);
-
-            // set right shoulder based on sigma count
-            ArrayList<Concept> someRestrictions = new ArrayList<>();
-            for (SigmaCounters.Sigma s : representation.getDefinition().getCounters())
-                someRestrictions.add( getRestriction( kb, s));
-            time = log( time, "create restrictions " + someRestrictions);
-
-            // define new scene concept cardinality
-            if ( ! someRestrictions.isEmpty()) {
-                Concept andRestriction = Concept.and( someRestrictions);
-                tbox.defineConcept( newSceneName, andRestriction);
-                kb.defineConcept( newSceneName, andRestriction);
-            } else System.err.println( "SCENE CANNOT BE LEARNED !!!! ");
-            time = log( time, newSceneName + " LEARNED");
-
-            // add vertex to semantic and edges
-            SceneHierarchyVertex learnedScene = new SceneHierarchyVertex(newSceneName, representation);
-            hierarchy.addVertex( learnedScene);
-
-            // overcome bug that stores learned Scene class
-            // subsumption is not working if syntax not parsed again
-            if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
-                this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
-            saveTbox( syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
-            tbox = readFromFile( syntaxLearnedFile, configurationFile);
-            kb = tbox.clone();  // should it be synchronized statically among all threads using an instance of SITTBox?
-            kb.solveKB();
-            time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
-
-            updateEdges( kb);
-            log( time, "Hierarchy computed: " + hierarchy);
-
-            return learnedScene;
-        } catch ( InconsistentOntologyException | FuzzyOntologyException  e){
-            e.printStackTrace(); // todo throw exception (for gui)
+    public SceneHierarchyVertex rawLearning(String newSceneName, SITABox representation){
+        if (scenes.contains(newSceneName)) {
+            System.err.println(newSceneName + " already defined !!!");
+            return null;
         }
-        return null;
+
+        KnowledgeBase kb = tbox.clone();
+
+        // add new base scene
+        long time = System.currentTimeMillis();
+        scenes.add(newSceneName);
+        tbox.defineAtomicConcept(newSceneName, kb.getConcept(CONCEPT_SCENE_TOP), getQueryLogic(), 1);
+        kb.defineAtomicConcept(newSceneName, kb.getConcept(CONCEPT_SCENE_TOP), getQueryLogic(), 1);
+        time = log(time, "adding new " + newSceneName);
+
+        // set right shoulder based on sigma count
+        ArrayList<Concept> someRestrictions = new ArrayList<>();
+        for (SigmaCounters.Sigma s : representation.getDefinition().getCounters())
+            someRestrictions.add(getRestriction(kb, s));
+        time = log(time, "create restrictions " + someRestrictions);
+
+        // define new scene concept cardinality
+        if (!someRestrictions.isEmpty()) {
+            Concept andRestriction = Concept.and(someRestrictions);
+            tbox.defineConcept(newSceneName, andRestriction);
+            kb.defineConcept(newSceneName, andRestriction);
+        } else System.err.println("SCENE CANNOT BE LEARNED !!!! ");
+        log(time, newSceneName + " LEARNED");
+
+        // add vertex to semantic and edges
+        SceneHierarchyVertex learnedScene = new SceneHierarchyVertex(newSceneName, representation);
+        hierarchy.addVertex(learnedScene);
+        return learnedScene;
+    }
+
+    public KnowledgeBase closeReopen(String newSceneName, SITABox representation, Object onSynch) {
+        // overcome bug that stores learned Scene class subsumption is not working if syntax not parsed again
+        synchronized (onSynch) {
+            long time = System.currentTimeMillis();
+            if (!syntaxFile.contains(LEARNER_FILE_AUXILIARY_PATH))
+                this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
+            saveTbox(syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
+            tbox = readFromFile(syntaxLearnedFile, configurationFile);
+            KnowledgeBase kb = tbox.clone();  // should it be synchronized statically among all threads using an instance of SITTBox?
+            try {
+                kb.solveKB();
+            } catch (FuzzyOntologyException | InconsistentOntologyException e) {
+                e.printStackTrace();
+            }
+            log(time, "Hierarchy updated from auxiliary file: " + hierarchy);
+            return kb;
+        }
     }
 
     // TODO solve issue: it does not remove axioms for fuzzydl file (store deleted scenes)
@@ -473,25 +484,29 @@ public class SITTBox
     }
 
     // used during learn it creates the left shoulder description given a sigma counter
-    private Concept getRestriction(KnowledgeBase kb, SigmaCounters.Sigma sigmaCnt)
-            throws FuzzyOntologyException {
-        // set right shoulder based on sigma count
-        double top = sigmaCnt.getRoundedCount();
-        double bottom = top - (( ROLE_SHOULDER_BOTTOM_PERCENT * top) / 100);
-        bottom = DoubleFormatter.roundDegree( bottom);
-        // set the name (used also on parsing during semantic build)
-        String t = String.valueOf( top).replace(".",REPLACE_DOUBLE_POINT);
-        String atLeastName = ROLE_ATLEAST + t;
-        RightConcreteConcept restriction;
-        if (tbox.concreteConcepts.contains( atLeastName))
-            restriction = (RightConcreteConcept)
-                    tbox.concreteConcepts.get( atLeastName);
-        else restriction = new RightConcreteConcept(atLeastName,
-                ROLE_SHOULDER_MIN, ROLE_SHOULDER_MAX, bottom, top);
-        kb.addConcept(atLeastName, restriction);
-        tbox.addConcept(atLeastName, restriction);
-        // set as (some 'role' 'atLeastX')
-        return Concept.some( sigmaCnt.getRole(), restriction);
+    private Concept getRestriction(KnowledgeBase kb, SigmaCounters.Sigma sigmaCnt) {
+        try {
+            // set right shoulder based on sigma count
+            double top = sigmaCnt.getRoundedCount();
+            double bottom = top - ((ROLE_SHOULDER_BOTTOM_PERCENT * top) / 100);
+            bottom = DoubleFormatter.roundDegree(bottom);
+            // set the name (used also on parsing during semantic build)
+            String t = String.valueOf(top).replace(".", REPLACE_DOUBLE_POINT);
+            String atLeastName = ROLE_ATLEAST + t;
+            RightConcreteConcept restriction;
+            if (tbox.concreteConcepts.contains(atLeastName))
+                restriction = (RightConcreteConcept)
+                        tbox.concreteConcepts.get(atLeastName);
+            else restriction = new RightConcreteConcept(atLeastName,
+                    ROLE_SHOULDER_MIN, ROLE_SHOULDER_MAX, bottom, top);
+            kb.addConcept(atLeastName, restriction);
+            tbox.addConcept(atLeastName, restriction);
+            // set as (some 'role' 'atLeastX')
+            return Concept.some(sigmaCnt.getRole(), restriction);
+        } catch (FuzzyOntologyException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

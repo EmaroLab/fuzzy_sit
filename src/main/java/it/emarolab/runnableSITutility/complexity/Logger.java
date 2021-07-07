@@ -1,6 +1,5 @@
 package it.emarolab.runnableSITutility.complexity;
 
-
 import it.emarolab.fuzzySIT.FuzzySITBase;
 
 import java.io.File;
@@ -14,27 +13,35 @@ import java.util.List;
 class CSVData{
     private final String testTag;
     private final Integer numberOfElements, numberOfRoles, numberOfScenes, numberOfConcepts, numberOfRelations;
-    private final long preRecognitionTime, learningTime, postRecognitionTime, idx, totalTime;
+    private final long preRecognitionTime, learningTime, postRecognitionTime, idx, totalTime, preEncodingTime, structuringTime, postEncodingTime;
 
     public static String getHeader(){
-        return "CSV data is all express in millisecond or integer (i.e., indices) and arranged as: `A,B,C,D,E,F,G,H,I` where \n" +
-                "\t A) An ordered identified based on the creation timestamp,\n" +
-                "\t B) A string identifying the ontology complexity (i.e., `C-D`),\n" +
-                "\t C) The Number of concepts in the ontology,\n" +
-                "\t D) The Number of relations in the ontology,\n" +
-                "\t E) Number of elements in the scene,\n" +
-                "\t F) Number of roles in the scene,\n" +
-                "\t G) Number of items in the memory,\n" +
-                "\t H) The recognition time before having learned a new scene,\n" +
-                "\t I) The learning time,\n" +
-                "\t J) The recognition time after having learned a new scene,\n" +
-                "\t K) The total computation time.";
+        return "CSV data is all express in millisecond or integer (i.e., indices) and arranged as: `1,2,3,4,5,6,7,8,9,10,11,12,13,14` where \n" +
+                "\t 1) An ordered identified based on the creation timestamp,\n" +
+                "\t 2) A string identifying the ontology complexity (i.e., `C-D`),\n" +
+                "\t 3) The Number of concepts in the ontology,\n" +
+                "\t 4) The Number of relations in the ontology,\n" +
+                "\t 5) Number of elements in the scene,\n" +
+                "\t 6) Number of roles in the scene,\n" +
+                "\t 7) Number of items in the memory,\n" +
+                "\t 8) The encoding time before having learned a new scene,\n" +
+                "\t 9) The recognition time before having learned a new scene,\n" +
+                "\t 10) The learning time,\n" +
+                "\t 11) The structuring time,\n" +
+                "\t 12) The encoding time after having learned a new scene,\n" +
+                "\t 13) The recognition time after having learned a new scene,\n" +
+                "\t 14) The total time.";
     }
 
     public CSVData(String testTag, Integer numberOfConcepts, Integer numberOfRelations, Integer numberOfElements,
-                   Integer numberOfRoles, Integer numberOfScenes, long preRecognitionTime, long learningTime, long postRecognitionTime, long totalTime) {
+                   Integer numberOfRoles, Integer numberOfScenes,
+                   long preEncodingTime, long preRecognitionTime, long learningTime, long structuringTime,
+                   long postRecognitionTime, long postEncodingTime, long totalTime) {
         this.idx = System.currentTimeMillis();
         this.testTag = testTag;
+        this.preEncodingTime = preEncodingTime;
+        this.postEncodingTime = postEncodingTime;
+        this.structuringTime = structuringTime;
         this.numberOfElements = numberOfElements;
         this.numberOfRoles = numberOfRoles;
         this.numberOfScenes = numberOfScenes;
@@ -49,8 +56,9 @@ class CSVData{
     @Override
     public String toString() {
         return idx + ", " + testTag + ", " + numberOfConcepts + ", " + numberOfRelations + ", " + numberOfElements
-                + ", " + numberOfRoles + ", " + numberOfScenes
-                + ", " + preRecognitionTime + ", " + learningTime + ", " + postRecognitionTime + ", " + totalTime + ";";
+                + ", " + numberOfRoles + ", " + numberOfScenes + ", " + preEncodingTime  + ", " + preRecognitionTime
+                + ", " + learningTime + ", " + structuringTime + ", " + postEncodingTime + ", " + postRecognitionTime
+                + ", " + totalTime + ";";
     }
 }
 

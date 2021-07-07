@@ -1,5 +1,6 @@
 package it.emarolab.runnableSITutility.complexity;
 
+import fuzzydl.KnowledgeBase;
 import it.emarolab.fuzzySIT.core.SITABox;
 import it.emarolab.fuzzySIT.core.SITTBox;
 import it.emarolab.fuzzySIT.core.axioms.SpatialObject;
@@ -62,12 +63,6 @@ public class ComputationalComplexityTest {
                 e.printStackTrace();
                 Logger.logError(e, "ERROR on main function");
             }
-
-            try {
-                Thread.sleep(500);  // wait to minimize the possibility that multithreading initialisation error occurs
-            } catch (InterruptedException e) {
-                Logger.logError(e, "Error on waiting.");
-            }
         }
 
         // wait the end of all tasks
@@ -93,7 +88,6 @@ public class ComputationalComplexityTest {
             }
         }
     }
-
     public static void waitEnd(List<SimulationTask> tasks, Logger mainLogger){
         boolean log = true;
         while (!tasks.isEmpty()) {
@@ -183,32 +177,45 @@ class SimulationTask implements Runnable {
                 logger.log("New scene elements (size: " + objects.size() + ") " + objects);
                 logger.log("New scene relations (size: " + relations.size() + ") " + relations);
 
-                // recognise before
-                long tsR1 = System.currentTimeMillis();
-                SITABox r1 = new SITABox(h, objects, relations);
-                Map<SceneHierarchyVertex, Double> rec1 = r1.getRecognitions();
-                long preRecTime = (System.currentTimeMillis() - tsR1);
-                logger.log("RECOGNISED Before Learning in " + preRecTime + "ms as: " + rec1);
+                // Pre encode (i.e., before learning)
+                long refTime = System.currentTimeMillis();
+                SITABox rPre = new SITABox(h, objects, relations);
+                long preEncodeTime = System.currentTimeMillis() - refTime;
+                logger.log("ENCODE before learning in " + preEncodeTime + "ms");
+                // Pre recognition (i.e., before learning)
+                refTime = System.currentTimeMillis();
+                Map<SceneHierarchyVertex, Double> preRec = rPre.getRecognitions();
+                long preRecTime = System.currentTimeMillis() - refTime;
+                logger.log("RECOGNISED before Learning in " + preRecTime + "ms as: " + preRec);
 
-                // learn
-                long tsL = System.currentTimeMillis();
-                SceneHierarchyVertex s;
-                s = h.learn("Scene" + t, r1);
-                long learnTime = (System.currentTimeMillis() - tsL);
+                // learning
+                String newSceneName = "Scene" + t;
+                refTime = System.currentTimeMillis();
+                SceneHierarchyVertex s = h.rawLearning(newSceneName, rPre);
+                long learnTime = System.currentTimeMillis() - refTime;
                 logger.log("LEARNED in " + learnTime + "ms with: " + s.getDefinition());
+                // structuring
+                KnowledgeBase kb = h.closeReopen(newSceneName, rPre, tasks); // solve FuzzyDL bug
+                refTime = System.currentTimeMillis();
+                h.updateEdges(kb); // structuring
+                long structuringTime = System.currentTimeMillis() - refTime;
+                logger.log("STRUCTURED in " + structuringTime + "ms");
 
-                // recognise after
-                long tsR2 = System.currentTimeMillis();
-                SITABox r2 = new SITABox(h, objects, relations);
-                Map<SceneHierarchyVertex, Double> rec2 = r2.getRecognitions();
-                long postRecTime = (System.currentTimeMillis() - tsR2);
-                logger.log("RECOGNISED After Learning in " + postRecTime + "ms as: " + rec2);
+                // Post encode (i.e., before learning)
+                refTime = System.currentTimeMillis();
+                SITABox rPost = new SITABox(h, objects, relations);
+                long postEncodeTime = System.currentTimeMillis() - refTime;
+                logger.log("ENCODE after learning in " + postEncodeTime + "ms");
+                // Post recognition (i.e., before learning)
+                refTime = System.currentTimeMillis();
+                Map<SceneHierarchyVertex, Double> postRec = rPost.getRecognitions();
+                long postRecTime = System.currentTimeMillis() - refTime;
+                logger.log("RECOGNISED after Learning in " + postRecTime + "ms as: " + postRec);
 
-                //Logger.csvWrite(new CSVData(t + 1, preRecTime, learnTime, postRecTime));
                 long total_time = System.currentTimeMillis() - st;
                 Logger.csvWrite(new CSVData(parameter.getTestLabel(), parameter.getConcepts().size(),
                         parameter.getRelations().size(), objects.size(), relations.size(), t+1,
-                        preRecTime, learnTime, postRecTime, total_time));
+                        preEncodeTime, preRecTime, learnTime, structuringTime, postEncodeTime, postRecTime, total_time));
                 Logger.csvFlush();
                 logger.flush();
             }
