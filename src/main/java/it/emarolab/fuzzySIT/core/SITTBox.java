@@ -415,11 +415,9 @@ public class SITTBox
             SceneHierarchyVertex learnedScene = new SceneHierarchyVertex(newSceneName, representation);
             hierarchy.addVertex( learnedScene);
 
-            if(synchOn != null){
-                synchronized (synchOn){
-                    saveAndReopen(kb, newSceneName, representation);
-                }
-            } else saveAndReopen(kb, newSceneName, representation);
+            // overcome bug that stores learned Scene class
+            // subsumption is not working if syntax not parsed again
+            saveAndReopen(kb, newSceneName, representation);
             time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
 
             updateEdges( kb);
@@ -431,9 +429,7 @@ public class SITTBox
         }
         return null;
     }
-    // overcome bug that stores learned Scene class
-    // subsumption is not working if syntax not parsed again
-    private KnowledgeBase saveAndReopen(KnowledgeBase kb, String newSceneName, SITABox representation)
+    private synchronized KnowledgeBase saveAndReopen(KnowledgeBase kb, String newSceneName, SITABox representation)
             throws InconsistentOntologyException, FuzzyOntologyException {
         if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
             this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
