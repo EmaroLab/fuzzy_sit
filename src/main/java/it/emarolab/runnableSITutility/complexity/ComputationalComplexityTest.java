@@ -186,7 +186,10 @@ class SimulationTask implements Runnable {
 
                 // learn
                 long tsL = System.currentTimeMillis();
-                SceneHierarchyVertex s = h.learn("Scene" + t, r1);
+                SceneHierarchyVertex s;
+                synchronized (tasks) {
+                    s = h.learn("Scene" + t, r1);
+                }
                 long learnTime = (System.currentTimeMillis() - tsL);
                 logger.log("LEARNED in " + learnTime + "ms with: " + s.getDefinition());
 
