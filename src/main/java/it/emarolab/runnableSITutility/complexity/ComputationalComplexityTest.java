@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 // (see `resources/computationComplexity/log/.../main.log` for more)
 public class ComputationalComplexityTest {
 
-    private static final int TASK_BUFFER_SIZE = 2;
+    private static int tasksBufferSize = 10;
 
     public static void main(String[] args) {
         // prepare for logging
@@ -29,6 +29,7 @@ public class ComputationalComplexityTest {
         mainLogger.log("-------------------- PARAMETERS --------------------------");
         // understand the parameter
         RawParameters rawParam = Parameter.getRawParam(args);
+        tasksBufferSize = rawParam.taskBufferSize;
         int elementsSize = rawParam.getElements().size();
         int sceneSize = rawParam.getScenes().size();
         mainLogger.log("Running test with specification: " + rawParam);
@@ -75,7 +76,7 @@ public class ComputationalComplexityTest {
 
     public static void waitBuffer(List<SimulationTask> tasks, Logger mainLogger){
         boolean log = true;
-        while (tasks.size() > TASK_BUFFER_SIZE) {
+        while (tasks.size() > tasksBufferSize) {
             try {
                 Thread.sleep(500);
                 if (log) {

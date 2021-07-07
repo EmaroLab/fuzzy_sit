@@ -25,9 +25,9 @@ class CSVData{
                 "\t E) Number of elements in the scene,\n" +
                 "\t F) Number of roles in the scene,\n" +
                 "\t G) Number of items in the memory,\n" +
-                "\t H) The recognition time before having learned a new scene, \n" +
+                "\t H) The recognition time before having learned a new scene,\n" +
                 "\t I) The learning time,\n" +
-                "\t J) The recognition time after having learned a new scene," +
+                "\t J) The recognition time after having learned a new scene,\n" +
                 "\t K) The total computation time.";
     }
 
