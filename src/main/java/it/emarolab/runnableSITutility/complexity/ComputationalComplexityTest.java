@@ -178,19 +178,14 @@ class SimulationTask implements Runnable {
                 logger.log("New scene relations (size: " + relations.size() + ") " + relations);
 
                 // Pre encode (i.e., before learning)
-                long refTime = System.currentTimeMillis();
                 SITABox rPre = new SITABox(h, objects, relations);
-                long preEncodeTime = System.currentTimeMillis() - refTime;
-                logger.log("ENCODE before learning in " + preEncodeTime + "ms");
-                // Pre recognition (i.e., before learning)
-                refTime = System.currentTimeMillis();
                 Map<SceneHierarchyVertex, Double> preRec = rPre.getRecognitions();
-                long preRecTime = System.currentTimeMillis() - refTime;
-                logger.log("RECOGNISED before Learning in " + preRecTime + "ms as: " + preRec);
+                logger.log("ENCODE before learning in " +  rPre.getEncodingTime() + "ms");
+                logger.log("RECOGNISED before Learning in " + rPre.getRecognitionTime() + "ms as: " + preRec);
 
                 // learning
                 String newSceneName = "Scene" + t;
-                refTime = System.currentTimeMillis();
+                long refTime = System.currentTimeMillis();
                 SceneHierarchyVertex s = h.rawLearning(newSceneName, rPre);
                 long learnTime = System.currentTimeMillis() - refTime;
                 logger.log("LEARNED in " + learnTime + "ms with: " + s.getDefinition());
@@ -202,20 +197,16 @@ class SimulationTask implements Runnable {
                 logger.log("STRUCTURED in " + structuringTime + "ms");
 
                 // Post encode (i.e., before learning)
-                refTime = System.currentTimeMillis();
                 SITABox rPost = new SITABox(h, objects, relations);
-                long postEncodeTime = System.currentTimeMillis() - refTime;
-                logger.log("ENCODE after learning in " + postEncodeTime + "ms");
-                // Post recognition (i.e., before learning)
-                refTime = System.currentTimeMillis();
                 Map<SceneHierarchyVertex, Double> postRec = rPost.getRecognitions();
-                long postRecTime = System.currentTimeMillis() - refTime;
-                logger.log("RECOGNISED after Learning in " + postRecTime + "ms as: " + postRec);
+                logger.log("ENCODE after learning in " + rPost.getEncodingTime() + "ms");
+                logger.log("RECOGNISED after Learning in " + rPost.getRecognitionTime() + "ms as: " + postRec);
 
                 long total_time = System.currentTimeMillis() - st;
                 Logger.csvWrite(new CSVData(parameter.getTestLabel(), parameter.getConcepts().size(),
                         parameter.getRelations().size(), objects.size(), relations.size(), t+1,
-                        preEncodeTime, preRecTime, learnTime, structuringTime, postEncodeTime, postRecTime, total_time));
+                        rPre.getEncodingTime(), rPre.getRecognitionTime(), learnTime, structuringTime,
+                        rPost.getEncodingTime(), rPost.getRecognitionTime(), total_time));
                 Logger.csvFlush();
                 logger.flush();
             }

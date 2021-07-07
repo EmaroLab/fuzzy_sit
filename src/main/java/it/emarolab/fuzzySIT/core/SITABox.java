@@ -47,6 +47,8 @@ public class SITABox
     private Collection<Map<String, Double>> objectDistribution = new ArrayList<>(); // Ψ: Map<ObjectName, Map< ObjectType, Membership>
     private Set<SpatialRelation> objservedRelations = new HashSet<>(); // given during learnig
 
+    private long encodingTime, recognitionTime;
+
     /**
      * Initialise a recogniser by specifying the objects of the scene and its spatial relations.
      * This constructors queries the {@link SigmaCounters} and creates an individual
@@ -57,6 +59,7 @@ public class SITABox
      */
     public SITABox(SITTBox hierarchy, Set<? extends SpatialObject> objects,
                    Set<SpatialRelation> relations){
+        long startTime = System.currentTimeMillis();
         this.tbox = hierarchy;
         this.abox = hierarchy.getTboxCopy(); // always starts with a fresh kb
         try {
@@ -65,6 +68,7 @@ public class SITABox
             definition = querySigmaCount( objects);
             scene = addSceneIndividual( definition);
             solveAboxAssertions();
+            encodingTime = System.currentTimeMillis() - startTime;
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {
@@ -80,6 +84,7 @@ public class SITABox
      * @param definition the sigma count definition of a SIT scene individual.
      */
     public SITABox(SITTBox hierarchy, SigmaCounters definition){
+        long startTime = System.currentTimeMillis();
         this.tbox = hierarchy;
         this.abox = hierarchy.getTboxCopy(); // always starts with a fresh kb
         try {
@@ -87,6 +92,7 @@ public class SITABox
             solveAbox();
             scene = addSceneIndividual( definition);
             solveAboxAssertions();
+            encodingTime = System.currentTimeMillis() - startTime;
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {
@@ -103,6 +109,7 @@ public class SITABox
      * @param particle the scene particle containing objects and their spatial relations.
      */
     public SITABox(SITTBox hierarchy, SceneParticle particle) {
+        long startTime = System.currentTimeMillis();
         this.tbox = hierarchy;
         this.abox = hierarchy.getTboxCopy(); // always starts with a fresh kb
         try {
@@ -111,6 +118,7 @@ public class SITABox
             definition = querySigmaCount( particle.getNoisedObjects());
             scene = addSceneIndividual( definition);
             solveAboxAssertions();
+            encodingTime = System.currentTimeMillis() - startTime;
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {
@@ -210,6 +218,7 @@ public class SITABox
             } else
                 log( FLAG_LOG_VERBOSE, q.getTotalTime(),actualScene + " ∉ " + stored);
         }
+        recognitionTime = System.currentTimeMillis() - time;
         log( initialTime, "scene recognition completed, results size " + recognised.size());
         return recognised;
     }
@@ -273,6 +282,13 @@ public class SITABox
         return objservedRelations;
     }
 
+    public long getEncodingTime() {
+        return encodingTime;
+    }
+
+    public long getRecognitionTime() {
+        return recognitionTime;
+    }
 
     public double getSimilarity(SceneHierarchyVertex recognisedScene){
         //double fuzzyness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT * recognisedScene.getDefinition().getCardinality() /100;
