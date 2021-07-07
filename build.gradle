@@ -21,3 +21,39 @@ task runExample(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
     main = "it.emarolab.runnableSITutility.example.SITExample"
 }
+
+task runComputationTest(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "it.emarolab.runnableSITutility.complexity.ComputationalComplexityTest"
+    // Example. Run it with:
+    //     gradle clean runComputationTest
+    //           -Pconcepts='2,4,6'                   # each >= 2, at least 1 element
+    //           -Prelations='2,4'                    # each >= 2, at least 1 element
+    //           -Pscenes='20,20,20,20'               # at least 1 item
+    //           -Pelements='7,11,18,23,30'           # at least 1 item
+    // Where `concepts` and `relations` specify the ontology complexity, based on all the permutations of the
+    // given value. Each permutation (e.g., 4,2) should be consistent with a file in the
+    // `resources/computationComplexityTest/ontologies` folder, which should be named as named `compTest_4-2.fuzzydl".
+    // is related to the label X_Y, respectively.
+    //
+    // `Elements` indicates the number of events in each scene, from which the number of its relation is derived.
+    // `Scenes` indicates the number of learned categories.
+    // The simulation iterates for each element of `scenes` and it learns the related number of categories having
+    // the number of each specified `elements`.
+    if (project.hasProperty('concepts')) {
+        args('-Pconcepts=' + concepts.toString())
+    }
+    if (project.hasProperty('relations')) {
+        args('-Prelations=' + relations.toString())
+    }
+    if (project.hasProperty('scenes')) {
+        args('-Pscenes=' + scenes.toString())
+    }
+    if (project.hasProperty('elements')) {
+        args('-Pelements=' + elements.toString())
+    }
+    // to test all use
+    //gradle clean runComputationTest -Pconcepts='2,4,6,8' -Prelations='2,4,6,8' -Pscenes='25,25,25' -Pelements='2,6,14,22,30,38'
+    // for debugging use
+    // gradle clean runComputationTest -Pconcepts='2' -Prelations='2,4' -Pscenes='2,2,2' -Pelements='2,3,4'
+}
