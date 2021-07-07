@@ -377,10 +377,7 @@ public class SITTBox
      * @param representation the scene representation to learn.
      * @return the learned node not structured in the memory graph
      */
-    public SceneHierarchyVertex learn(String newSceneName, SITABox representation) {
-        return learn(newSceneName, representation, null);
-    }
-    public SceneHierarchyVertex learn(String newSceneName, SITABox representation, Object synchOn){
+    public SceneHierarchyVertex learn(String newSceneName, SITABox representation){
         try {
 
             if ( scenes.contains( newSceneName)){
@@ -417,7 +414,12 @@ public class SITTBox
 
             // overcome bug that stores learned Scene class
             // subsumption is not working if syntax not parsed again
-            saveAndReopen(kb, newSceneName, representation);
+            if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
+                this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
+            saveTbox( syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
+            tbox = readFromFile( syntaxLearnedFile, configurationFile);
+            kb = tbox.clone();  // should it be synchronized statically among all threads using an instance of SITTBox?
+            kb.solveKB();
             time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
 
             updateEdges( kb);
@@ -428,16 +430,6 @@ public class SITTBox
             e.printStackTrace(); // todo throw exception (for gui)
         }
         return null;
-    }
-    private synchronized KnowledgeBase saveAndReopen(KnowledgeBase kb, String newSceneName, SITABox representation)
-            throws InconsistentOntologyException, FuzzyOntologyException {
-        if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
-            this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
-        saveTbox( syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
-        tbox = readFromFile( syntaxLearnedFile, configurationFile);
-        kb = tbox.clone();
-        kb.solveKB();
-        return kb;
     }
 
     // TODO solve issue: it does not remove axioms for fuzzydl file (store deleted scenes)

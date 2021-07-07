@@ -62,6 +62,12 @@ public class ComputationalComplexityTest {
                 e.printStackTrace();
                 Logger.logError(e, "ERROR on main function");
             }
+
+            try {
+                Thread.sleep(500);  // wait to minimize the possibility that multithreading initialisation error occurs
+            } catch (InterruptedException e) {
+                Logger.logError(e, "Error on waiting.");
+            }
         }
 
         // wait the end of all tasks
@@ -187,7 +193,7 @@ class SimulationTask implements Runnable {
                 // learn
                 long tsL = System.currentTimeMillis();
                 SceneHierarchyVertex s;
-                s = h.learn("Scene" + t, r1, tasks);
+                s = h.learn("Scene" + t, r1);
                 long learnTime = (System.currentTimeMillis() - tsL);
                 logger.log("LEARNED in " + learnTime + "ms with: " + s.getDefinition());
 
