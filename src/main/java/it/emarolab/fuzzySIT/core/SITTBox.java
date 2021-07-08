@@ -74,13 +74,13 @@ public class SITTBox
 
     // todo add noise on the learning (there must be all relations)
 
-    private ListenableDirectedWeightedGraph<SceneHierarchyVertex, SceneHierarchyEdge>
+    private final ListenableDirectedWeightedGraph<SceneHierarchyVertex, SceneHierarchyEdge>
             hierarchy = new ListenableDirectedWeightedGraph<>( SceneHierarchyEdge.class); // the SIT scene class hierarchy
     private KnowledgeBase tbox; // the fresh fuzzy T-Box
     private Collection<Query> syntaxQueries; // the queries in the fuzzydl syntax (for debugging purposes)
     private Collection<String> scenes; // the name of all the scenes in the T-Box
     private Map<String, SpatialProperty> spatial; // Map<Δ,δ> between Scene Classes (Δ), given in the ontology; and Scene Properties (δ ≡ "hasΔ")
-    private Map<String, List<Map<String, Double>>> objectDistribution = new HashMap<>(); // Map<nameScene, List<ObjectType, objectCount>>
+    private final Map<String, List<Map<String, Double>>> objectDistribution = new HashMap<>(); // Map<nameScene, List<ObjectType, objectCount>>
     private Collection<String> objectType; // the collection of all objects type Π = {..., πq, ...}
     private String syntaxFile; // the path to the fuzzydl syntax file
     private String configurationFile; // the path to the fuzzydl configuration file
@@ -142,11 +142,11 @@ public class SITTBox
      */
     public SITTBox(String tboxPath, String fuzzydlConfigPath) {
         this.onSync = this; // e.g., `synchronize(this){..}`
-        // initialise( tboxPath, fuzzydlConfigPath);
+        initialise( tboxPath, fuzzydlConfigPath);
     }
     public SITTBox(String tboxPath, String fuzzydlConfigPath, Object onSync) {
         this.onSync = onSync; // e.g., `synchronize(onSync){..}`
-        // initialise( tboxPath, fuzzydlConfigPath);
+        initialise( tboxPath, fuzzydlConfigPath);
     }
     // common constructor for implement this TBox manager
     private void initialise(String tboxPath, String confFile){
@@ -365,7 +365,7 @@ public class SITTBox
             throws FuzzyOntologyException {
         scenes = querySubConcept( CONCEPT_SCENE_TOP, kb);
     }
-    // used by setScene(..) and setSpatial(..) it returns all classes that subsume the given class
+    // used by setScene(..) it returns all classes that subsume the given class
     // with a minimum fuzzy value equal to 1.
     private Set<String> querySubConcept( String superConcept, KnowledgeBase kb) throws FuzzyOntologyException {
         long time = System.currentTimeMillis();
@@ -378,8 +378,6 @@ public class SITTBox
                 Concept c = kb.getConcept(s);
                 Query q = new MinSubsumesQuery(superClass, c, logic);
                 Solution sol = q.solve( kb);
-                if(sol==null)
-                    System.err.println("NULL SOLUTION !!!!!!!!!!!!!!!!!!!!!!!");
                 log( FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + c + " ⊂ " + superConcept + " ("
                         + sol.getSolution() + ")");
                 double minSubConceptDegree = sol.getSolution();

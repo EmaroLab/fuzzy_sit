@@ -160,6 +160,7 @@ class SimulationTask implements Runnable {
     private void simulate(int numberOfElements, int numberOfScenes, String testIdx){
         try {
             long totTime = 0;
+            Thread.sleep(ThreadLocalRandom.current().nextInt(100, 1000));
             SITTBox h = new SITTBox(parameter.getOntology(), tasks);
 
             logger.log("----------------------  " + testIdx + "NEW TEST SUMMARY ---------------------");
