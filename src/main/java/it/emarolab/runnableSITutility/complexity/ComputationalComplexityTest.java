@@ -184,6 +184,7 @@ class SimulationTask implements Runnable {
                 Map<SceneHierarchyVertex, Double> preRec = rPre.getRecognitions();
                 logger.log("ENCODE before learning in " +  rPre.getEncodingTime() + "ms");
                 logger.log("RECOGNISED before Learning in " + rPre.getRecognitionTime() + "ms as: " + preRec);
+                int preRecognitionSize = preRec.size();
 
                 // learning
                 String newSceneName = "Scene" + t;
@@ -203,6 +204,7 @@ class SimulationTask implements Runnable {
                 Map<SceneHierarchyVertex, Double> postRec = rPost.getRecognitions();
                 logger.log("ENCODE after learning in " + rPost.getEncodingTime() + "ms");
                 logger.log("RECOGNISED after Learning in " + rPost.getRecognitionTime() + "ms as: " + postRec);
+                int postRecognitionSize = postRec.size();
 
                 // store memory usage of this thread (it is an estimation)
                 long memory = ((ThreadMXBean) ManagementFactory.getThreadMXBean()).getThreadAllocatedBytes(thread.getId());
@@ -212,7 +214,8 @@ class SimulationTask implements Runnable {
                 Logger.csvWrite(new CSVData(parameter.getTestLabel(), parameter.getConcepts().size(),
                         parameter.getRelations().size(), objects.size(), relations.size(), t+1,
                         rPre.getEncodingTime(), rPre.getRecognitionTime(), learnTime, structuringTime,
-                        rPost.getEncodingTime(), rPost.getRecognitionTime(), total_time, memory));
+                        rPost.getEncodingTime(), rPost.getRecognitionTime(), total_time, memory,
+                        preRecognitionSize, postRecognitionSize));
                 Logger.csvFlush();
                 logger.flush();
             }

@@ -14,30 +14,34 @@ class CSVData{
     private final String testTag;
     private final Integer numberOfElements, numberOfRoles, numberOfScenes, numberOfConcepts, numberOfRelations;
     private final long preRecognitionTime, learningTime, postRecognitionTime, idx, totalTime, preEncodingTime, structuringTime, postEncodingTime, memory;
+    private final int preRecognitionSize, postRecognitionSize;
 
     public static String getHeader(){
-        return "CSV data is all express in millisecond or integer (i.e., indices) and arranged as: `1,2,3,4,5,6,7,8,9,10,11,12,13,14` where \n" +
-                "\t 1) An ordered identified based on the creation timestamp,\n" +
-                "\t 2) A string identifying the ontology complexity (i.e., `C-D`),\n" +
-                "\t 3) The Number of concepts in the ontology,\n" +
-                "\t 4) The Number of relations in the ontology,\n" +
-                "\t 5) Number of elements in the scene,\n" +
-                "\t 6) Number of roles in the scene,\n" +
-                "\t 7) Number of items in the memory,\n" +
-                "\t 8) The encoding time before having learned a new scene,\n" +
-                "\t 9) The recognition time before having learned a new scene,\n" +
-                "\t 10) The learning time,\n" +
-                "\t 11) The structuring time,\n" +
-                "\t 12) The encoding time after having learned a new scene,\n" +
-                "\t 13) The recognition time after having learned a new scene,\n" +
-                "\t 14) The total time,\n" +
-                "\t 15) Computer memory usage in Byte.";
+        return "CSV data is all express in millisecond or integer (i.e., indices) and arranged with columns `A,B,C,...,Q` as \n" +
+                "\t A) An ordered identified based on the creation timestamp,\n" +
+                "\t B) A string identifying the ontology complexity (i.e., `C-D`),\n" +
+                "\t C) The Number of concepts in the ontology,\n" +
+                "\t D) The Number of relations in the ontology,\n" +
+                "\t E) Number of elements in the scene,\n" +
+                "\t F) Number of roles in the scene,\n" +
+                "\t G) Number of items in the memory,\n" +
+                "\t H) The encoding time before having learned a new scene,\n" +
+                "\t I) The recognition time before having learned a new scene,\n" +
+                "\t J) The learning time,\n" +
+                "\t K) The structuring time,\n" +
+                "\t L) The encoding time after having learned a new scene,\n" +
+                "\t M) The recognition time after having learned a new scene,\n" +
+                "\t N) The total time,\n" +
+                "\t O) Computer memory usage in Byte,\n" +
+                "\t P) Number of categories pre-recognised,\n" +
+                "\t Q) Number of categories post-recognised";
     }
 
     public CSVData(String testTag, Integer numberOfConcepts, Integer numberOfRelations, Integer numberOfElements,
                    Integer numberOfRoles, Integer numberOfScenes,
                    long preEncodingTime, long preRecognitionTime, long learningTime, long structuringTime,
-                   long postRecognitionTime, long postEncodingTime, long totalTime, long memory) {
+                   long postRecognitionTime, long postEncodingTime, long totalTime, long memory,
+                   int preRecognitionSize, int postRecognitionSize) {
         this.idx = System.currentTimeMillis();
         this.testTag = testTag;
         this.preEncodingTime = preEncodingTime;
@@ -53,6 +57,8 @@ class CSVData{
         this.numberOfRelations = numberOfRelations;
         this.totalTime = totalTime;
         this.memory = memory;
+        this.preRecognitionSize = preRecognitionSize;
+        this.postRecognitionSize = postRecognitionSize;
     }
 
     @Override
@@ -60,7 +66,7 @@ class CSVData{
         return idx + ", " + testTag + ", " + numberOfConcepts + ", " + numberOfRelations + ", " + numberOfElements
                 + ", " + numberOfRoles + ", " + numberOfScenes + ", " + preEncodingTime  + ", " + preRecognitionTime
                 + ", " + learningTime + ", " + structuringTime + ", " + postEncodingTime + ", " + postRecognitionTime
-                + ", " + totalTime + ", " + memory + ";";
+                + ", " + totalTime + ", " + memory + ", " + preRecognitionSize + ", " + postRecognitionSize + ";";
     }
 }
 

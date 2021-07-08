@@ -14,7 +14,7 @@ The theoretical background of SIT can be found in
    ["Dialogue-Based Supervision and Explanation of Robot Spatial Beliefs: a Software Architecture Perspective,"](https://ieeexplore.ieee.org/abstract/document/8525828) 
    2018 27th IEEE International Symposium on Robot and Human Interactive Communication (RO-MAN), 2018, pp. 977-984, doi: 10.1109/ROMAN.2018.8525828.
  - L. Buoncompagni and F. Mastrogiovanni,
-   ["A Framework Inspired by Cognitive Memory to Learn Planning Domains From Demonstrations,"](ceur-ws.org/Vol-2594/short4.pdf)
+   ["A Framework Inspired by Cognitive Memory to Learn Planning Domains From Demonstrations,"](http://ceur-ws.org/Vol-2594/short4.pdf)
    in  Proceedings of the 6th Italian Workshop on Artificial Intelligence and Robotics
    co-located with the XVIII International Conference of the Italian Association for Artificial Intelligence (AIxIA 2019)
    Rende, Italy, November 22, 2019, CEUR-WS, Vol-2594.
@@ -203,7 +203,9 @@ CSV data is all express in millisecond or integer (i.e., indices) and arranged i
  - L) The encoding time after having learned a new scene,  
  - M) The recognition time after having learned a new scene,  
  - N) The total time,  
- - O) Computer memory usage in Byte.  
+ - O) Computer memory usage in Byte,
+ - P) Number of categories pre-recognised, 
+ - Q) Number of categories post-recognised.
 
 # Contacts
 **Author**: Luca Buoncompagni,  
