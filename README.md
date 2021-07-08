@@ -188,7 +188,7 @@ where
 The test is performed for each combination of `concepts`, `relations`, `scenes` and `elements`. 
 The results are store as `csv` files in the folder `src/main/java/resources/ComputationComplexityTest/log`.
 CSV data is all express in millisecond or integer (e.g., for indices) and arranged in columns ordered as
-CSV data is all express in millisecond or integer (i.e., indices) and arranged as: `A,B,C,...,O` where  
+CSV data is all express in millisecond or integer (i.e., indices) and arranged in columns as: `A,B,C,...,O` where  
  - A) An ordered identified based on the creation timestamp,  
  - B) A string identifying the ontology complexity (i.e., `C-D`),  
  - C) The Number of concepts in the ontology,  
