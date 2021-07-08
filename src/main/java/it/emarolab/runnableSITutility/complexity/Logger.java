@@ -164,7 +164,7 @@ public class Logger {
     }
 
     public static String getReadableTime(){
-        return new SimpleDateFormat("dd-MM-yy_HH-mm-ss-SSS").format(new Date());
+        return new SimpleDateFormat("yy-MM-dd_HH-mm-ss-SSS").format(new Date());
     }
 
     public static String getTestDescription(List<String> concepts, List<String> relations){
