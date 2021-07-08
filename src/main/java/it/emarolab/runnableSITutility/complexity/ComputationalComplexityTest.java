@@ -160,10 +160,7 @@ class SimulationTask implements Runnable {
     private void simulate(int numberOfElements, int numberOfScenes, String testIdx){
         try {
             long totTime = 0;
-            SITTBox h;
-            synchronized (tasks){
-                h = new SITTBox(parameter.getOntology());
-            }
+            SITTBox h = new SITTBox(parameter.getOntology(), tasks);
 
             logger.log("----------------------  " + testIdx + "NEW TEST SUMMARY ---------------------");
             logger.log("Number of elements in a scene: " + numberOfElements + ".");

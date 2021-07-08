@@ -101,12 +101,12 @@ public class SITTBox
      * (that can be farther saved).
      */
     public SITTBox() {
-        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
         this.onSync = this; // e.g., `synchronize(this){..}`
+        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
     }
     public SITTBox(Object onSync) {
-        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
         this.onSync = onSync; // e.g., `synchronize(onSync){..}`
+        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
     }
     /**
      * Initialises this T-Box by using the given ontology and default
@@ -121,12 +121,12 @@ public class SITTBox
      * @param tboxPath the path to the fuzzy SIT ontology to use.
      */
     public SITTBox(String tboxPath) {
-        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
         this.onSync = this; // e.g., `synchronize(this){..}`
+        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
     }
     public SITTBox(String tboxPath, Object onSync) {
-        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
         this.onSync = onSync; // e.g., `synchronize(onSync){..}`
+        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
     }
     /**
      * Initialises this T-Box by using the given ontology and fuzzydl configuration file.
@@ -141,12 +141,12 @@ public class SITTBox
      * @param fuzzydlConfigPath the configuration file for the fuzzydl reasoner.
      */
     public SITTBox(String tboxPath, String fuzzydlConfigPath) {
-        initialise( tboxPath, fuzzydlConfigPath);
         this.onSync = this; // e.g., `synchronize(this){..}`
+        // initialise( tboxPath, fuzzydlConfigPath);
     }
     public SITTBox(String tboxPath, String fuzzydlConfigPath, Object onSync) {
-        initialise( tboxPath, fuzzydlConfigPath);
         this.onSync = onSync; // e.g., `synchronize(onSync){..}`
+        // initialise( tboxPath, fuzzydlConfigPath);
     }
     // common constructor for implement this TBox manager
     private void initialise(String tboxPath, String confFile){
