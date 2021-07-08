@@ -384,6 +384,8 @@ public class SITTBox
                 Concept c = kb.getConcept(s);
                 Query q = new MinSubsumesQuery(superClass, c, logic);
                 Solution sol = q.solve( kb);
+                if(sol==null)
+                    System.err.println("NULL SOLUTION !!!!!!!!!!!!!!!!!!!!!!!");
                 log( FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + c + " ⊂ " + superConcept + " ("
                         + sol.getSolution() + ")");
                 double minSubConceptDegree = sol.getSolution();
