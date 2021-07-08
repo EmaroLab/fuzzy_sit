@@ -14,7 +14,6 @@ import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.core.axioms.SpatialProperty;
 import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyEdge;
 import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyVertex;
-//import javafx.util.Pair;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.ListenableDirectedWeightedGraph;
@@ -88,6 +87,7 @@ public class SITTBox
     private String syntaxLearnedFile; // the path to the fuzzydl auxiliary syntax file, used while learning
     private JFrame frame; // used for visualising the hierarchy, debugging purposes.
     private static String toWrite  = NEW_LINE; // lines to add in the syntax to save the information about the object type distributions
+    private final Object onSync; // used for synchronise the reading ad writing to file through fuzzyDL
 
     /**
      * Initialises this T-Box by using the default ontology ({@link #FILE_ONTOLOGY_LOAD}) and
@@ -102,6 +102,11 @@ public class SITTBox
      */
     public SITTBox() {
         initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
+        this.onSync = this; // e.g., `synchronize(this){..}`
+    }
+    public SITTBox(Object onSync) {
+        initialise(FILE_ONTOLOGY_LOAD, FILE_FUZZYDL_CONFIG);
+        this.onSync = onSync; // e.g., `synchronize(onSync){..}`
     }
     /**
      * Initialises this T-Box by using the given ontology and default
@@ -117,6 +122,11 @@ public class SITTBox
      */
     public SITTBox(String tboxPath) {
         initialise( tboxPath, FILE_FUZZYDL_CONFIG);
+        this.onSync = this; // e.g., `synchronize(this){..}`
+    }
+    public SITTBox(String tboxPath, Object onSync) {
+        initialise( tboxPath, FILE_FUZZYDL_CONFIG);
+        this.onSync = onSync; // e.g., `synchronize(onSync){..}`
     }
     /**
      * Initialises this T-Box by using the given ontology and fuzzydl configuration file.
@@ -132,6 +142,11 @@ public class SITTBox
      */
     public SITTBox(String tboxPath, String fuzzydlConfigPath) {
         initialise( tboxPath, fuzzydlConfigPath);
+        this.onSync = this; // e.g., `synchronize(this){..}`
+    }
+    public SITTBox(String tboxPath, String fuzzydlConfigPath, Object onSync) {
+        initialise( tboxPath, fuzzydlConfigPath);
+        this.onSync = onSync; // e.g., `synchronize(onSync){..}`
     }
     // common constructor for implement this TBox manager
     private void initialise(String tboxPath, String confFile){
@@ -140,7 +155,7 @@ public class SITTBox
             this.syntaxLearnedFile = tboxPath;
             // never solve T-Box !!!! This make error when a new class in learned at run time.
             // After each leaning operation you should manipulated a fresh T-Box. This justify the auxiliary file.
-            tbox = readFromFile( tboxPath, confFile);
+            tbox = readFromFile( tboxPath, confFile, true);
             // use a copy of the T-Box, which can be solved
             KnowledgeBase kb = tbox.clone();
             kb.solveKB();
@@ -156,7 +171,15 @@ public class SITTBox
     }
 
     // called in constructor, it reads the ontology from file.
-    private synchronized KnowledgeBase readFromFile(String tboxPath, String confFile){
+    private KnowledgeBase readFromFile(String tboxPath, String confFile, boolean shoudlSync) {
+        if(shoudlSync) {
+            synchronized (this.onSync) {
+                return _readFromFile(tboxPath, confFile);
+            }
+        } else
+            return _readFromFile(tboxPath, confFile);
+    }
+    private KnowledgeBase _readFromFile(String tboxPath, String confFile){
         long time = System.currentTimeMillis();
         syntaxFile = tboxPath;
         configurationFile = confFile;
@@ -164,9 +187,9 @@ public class SITTBox
         FileInputStream is = null;
         Parser.reset();
         try {
-            is = new FileInputStream( tboxPath);
-            ConfigReader.loadParameters( confFile, new String[0]);
-            Parser parser = new Parser( is);
+            is = new FileInputStream(tboxPath);
+            ConfigReader.loadParameters(confFile, new String[0]);
+            Parser parser = new Parser(is);
             parser.Start();
             kb = parser.getKB();
             syntaxQueries = parser.getQueries();
@@ -183,7 +206,7 @@ public class SITTBox
                 e.printStackTrace();
             }
         }
-        log( time, "load T-box syntax from " + tboxPath);
+        log(time, "load T-box syntax from " + tboxPath);
         return kb;
     }
 
@@ -431,7 +454,7 @@ public class SITTBox
             if (!syntaxFile.contains(LEARNER_FILE_AUXILIARY_PATH))
                 this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
             saveTbox(syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
-            tbox = readFromFile(syntaxLearnedFile, configurationFile);
+            tbox = readFromFile(syntaxLearnedFile, configurationFile, false);
             KnowledgeBase kb = tbox.clone();  // should it be synchronized statically among all threads using an instance of SITTBox?
             try {
                 kb.solveKB();
@@ -446,39 +469,41 @@ public class SITTBox
     // TODO solve issue: it does not remove axioms for fuzzydl file (store deleted scenes)
     // TODO assure new name when reopening file
     public Concept removeScene(SceneHierarchyVertex toRemove){
-        try {
-            String sceneNameToRemove = toRemove.getScene();
-            if ( ! scenes.contains( sceneNameToRemove)){
-                System.err.println( sceneNameToRemove + " not defined !!!");
-                return null;
+        synchronized (this.onSync) {
+            try {
+                String sceneNameToRemove = toRemove.getScene();
+                if (!scenes.contains(sceneNameToRemove)) {
+                    System.err.println(sceneNameToRemove + " not defined !!!");
+                    return null;
+                }
+
+                KnowledgeBase kb = tbox.clone();
+                // remove scene
+                long time = System.currentTimeMillis();
+                scenes.remove(sceneNameToRemove);
+                Concept toRemoveConcept = tbox.getConcept(sceneNameToRemove);
+                hierarchy.removeVertex(toRemove);
+                kb.atomicConcepts.remove(sceneNameToRemove);
+                tbox.atomicConcepts.remove(sceneNameToRemove);
+                objectDistribution.remove(sceneNameToRemove);
+
+                // overcome bug that stores learned Scene class
+                // subsumption is not working if syntax not parsed again
+                if (!syntaxFile.contains(LEARNER_FILE_AUXILIARY_PATH))
+                    this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
+                toWrite = toWrite.replaceAll(ANNOTATION_PREFIX + sceneNameToRemove + ANNOTATION_CARDINALITY_SEPARATOR + getObjectDistributionForFile(toRemove.getObjectDistribution()) + NEW_LINE, "");
+                saveTbox(syntaxLearnedFile);
+                kb = tbox.clone();
+                kb.solveKB();
+                time = log(time, "Hierarchy updated from auxiliary file: " + hierarchy);
+
+                updateEdges(kb);
+                log(time, "Hierarchy computed: " + hierarchy);
+
+                return toRemoveConcept;
+            } catch (InconsistentOntologyException | FuzzyOntologyException e) {
+                e.printStackTrace(); // todo throw exception (for gui)
             }
-
-            KnowledgeBase kb = tbox.clone();
-            // remove scene
-            long time = System.currentTimeMillis();
-            scenes.remove( sceneNameToRemove);
-            Concept toRemoveConcept = tbox.getConcept(sceneNameToRemove);
-            hierarchy.removeVertex( toRemove);
-            kb.atomicConcepts.remove( sceneNameToRemove);
-            tbox.atomicConcepts.remove( sceneNameToRemove);
-            objectDistribution.remove( sceneNameToRemove);
-
-            // overcome bug that stores learned Scene class
-            // subsumption is not working if syntax not parsed again
-            if ( ! syntaxFile.contains( LEARNER_FILE_AUXILIARY_PATH))
-                this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
-            toWrite = toWrite.replaceAll( ANNOTATION_PREFIX + sceneNameToRemove + ANNOTATION_CARDINALITY_SEPARATOR + getObjectDistributionForFile( toRemove.getObjectDistribution()) + NEW_LINE, "");
-            saveTbox( syntaxLearnedFile);
-            kb = tbox.clone();
-            kb.solveKB();
-            time = log( time, "Hierarchy updated from auxiliary file: " + hierarchy);
-
-            updateEdges( kb);
-            log( time, "Hierarchy computed: " + hierarchy);
-
-            return toRemoveConcept;
-        } catch ( InconsistentOntologyException | FuzzyOntologyException  e){
-            e.printStackTrace(); // todo throw exception (for gui)
         }
         return null;
     }
