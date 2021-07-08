@@ -67,8 +67,8 @@ public class SITABox
             solveAbox();
             definition = querySigmaCount( objects);
             scene = addSceneIndividual( definition);
-            solveAboxAssertions();
             encodingTime = System.currentTimeMillis() - startTime;
+            solveAboxAssertions();
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {
@@ -91,8 +91,8 @@ public class SITABox
             this.definition = definition;
             solveAbox();
             scene = addSceneIndividual( definition);
-            solveAboxAssertions();
             encodingTime = System.currentTimeMillis() - startTime;
+            solveAboxAssertions();
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {
@@ -117,8 +117,8 @@ public class SITABox
             solveAbox();
             definition = querySigmaCount( particle.getNoisedObjects());
             scene = addSceneIndividual( definition);
-            solveAboxAssertions();
             encodingTime = System.currentTimeMillis() - startTime;
+            solveAboxAssertions();
             recognitions = recognise( scene, tbox);
         } catch (InconsistentOntologyException |
                 FuzzyOntologyException e) {

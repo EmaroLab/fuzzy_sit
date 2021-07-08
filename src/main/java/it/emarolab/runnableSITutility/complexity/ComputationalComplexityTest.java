@@ -1,5 +1,6 @@
 package it.emarolab.runnableSITutility.complexity;
 
+import com.sun.management.ThreadMXBean;
 import fuzzydl.KnowledgeBase;
 import it.emarolab.fuzzySIT.core.SITABox;
 import it.emarolab.fuzzySIT.core.SITTBox;
@@ -7,6 +8,7 @@ import it.emarolab.fuzzySIT.core.axioms.SpatialObject;
 import it.emarolab.fuzzySIT.core.axioms.SpatialRelation;
 import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyVertex;
 
+import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,7 +59,9 @@ public class ComputationalComplexityTest {
             // launch task
             try {
                 SimulationTask task = new SimulationTask(globalCnt.get(), p, tasks, mainLogger);
-                new Thread(task).start();
+                Thread t = new Thread(task);
+                task.setThread(t);
+                t.start();
                 tasks.add(task);
             } catch (Exception e){
                 e.printStackTrace();
@@ -114,6 +118,7 @@ class SimulationTask implements Runnable {
 
     private final Set<SpatialObject> objects = new HashSet<>(); // the set of objects in the SIT scene to test
     private final Set<SpatialRelation> relations = new HashSet<>(); // the set of relations in the SIT scene to test
+    private Thread thread; // the thread where `this` is running
 
 
     public SimulationTask(int globalCnt, Parameter parameter, List<SimulationTask> tasks, Logger mainLogger) {
@@ -202,11 +207,15 @@ class SimulationTask implements Runnable {
                 logger.log("ENCODE after learning in " + rPost.getEncodingTime() + "ms");
                 logger.log("RECOGNISED after Learning in " + rPost.getRecognitionTime() + "ms as: " + postRec);
 
+                // store memory usage of this thread (it is an estimation)
+                long memory = ((ThreadMXBean) ManagementFactory.getThreadMXBean()).getThreadAllocatedBytes(thread.getId());
+                logger.log("used memory " + memory/1048576 + "MB");
+
                 long total_time = System.currentTimeMillis() - st;
                 Logger.csvWrite(new CSVData(parameter.getTestLabel(), parameter.getConcepts().size(),
                         parameter.getRelations().size(), objects.size(), relations.size(), t+1,
                         rPre.getEncodingTime(), rPre.getRecognitionTime(), learnTime, structuringTime,
-                        rPost.getEncodingTime(), rPost.getRecognitionTime(), total_time));
+                        rPost.getEncodingTime(), rPost.getRecognitionTime(), total_time, memory));
                 Logger.csvFlush();
                 logger.flush();
             }
@@ -242,7 +251,11 @@ class SimulationTask implements Runnable {
                 }
             }
         }
-        mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended");
+
+        Runtime runtime = Runtime.getRuntime();
+        long memory = runtime.totalMemory() - runtime.freeMemory(); // Calculate the used memory by the entire process
+        runtime.gc(); // suggests the JSM to run the garbage collector
+        mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended. The entire process used " + memory/1048576 + "MB");
 
         logger.close();
         synchronized (tasks) {
@@ -256,6 +269,10 @@ class SimulationTask implements Runnable {
 
     public static int randomIdx(int max) {
         return ThreadLocalRandom.current().nextInt(0, max);
+    }
+
+    public void setThread(Thread t) {
+        this.thread = t;
     }
 }
 

@@ -57,7 +57,7 @@ task runComputationTest(type: JavaExec) {
         args('-PtasksLimit=' + tasksLimit.toString())
     }
     // to test all use
-    //gradle clean runComputationTest -Pconcepts='2,4,6,8' -Prelations='2,4,6,8' -Pscenes='25,25,25' -Pelements='2,6,14,22,30,38' -PtasksLimit='16'
+    //gradle clean runComputationTest -Pconcepts='2,4,6,8' -Prelations='8,6,4,2' -Pscenes='20,20,20' -Pelements='2,6,14,22,30' -PtasksLimit='6'
     // for debugging use
     // gradle clean runComputationTest -Pconcepts='2' -Prelations='2,4' -Pscenes='2,2,2' -Pelements='2,3,4' -PtasksLimit='2'
 }

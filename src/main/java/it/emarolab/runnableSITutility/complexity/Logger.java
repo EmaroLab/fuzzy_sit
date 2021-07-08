@@ -13,7 +13,7 @@ import java.util.List;
 class CSVData{
     private final String testTag;
     private final Integer numberOfElements, numberOfRoles, numberOfScenes, numberOfConcepts, numberOfRelations;
-    private final long preRecognitionTime, learningTime, postRecognitionTime, idx, totalTime, preEncodingTime, structuringTime, postEncodingTime;
+    private final long preRecognitionTime, learningTime, postRecognitionTime, idx, totalTime, preEncodingTime, structuringTime, postEncodingTime, memory;
 
     public static String getHeader(){
         return "CSV data is all express in millisecond or integer (i.e., indices) and arranged as: `1,2,3,4,5,6,7,8,9,10,11,12,13,14` where \n" +
@@ -30,13 +30,14 @@ class CSVData{
                 "\t 11) The structuring time,\n" +
                 "\t 12) The encoding time after having learned a new scene,\n" +
                 "\t 13) The recognition time after having learned a new scene,\n" +
-                "\t 14) The total time.";
+                "\t 14) The total time,\n" +
+                "\t 15) Computer memory usage in Byte.";
     }
 
     public CSVData(String testTag, Integer numberOfConcepts, Integer numberOfRelations, Integer numberOfElements,
                    Integer numberOfRoles, Integer numberOfScenes,
                    long preEncodingTime, long preRecognitionTime, long learningTime, long structuringTime,
-                   long postRecognitionTime, long postEncodingTime, long totalTime) {
+                   long postRecognitionTime, long postEncodingTime, long totalTime, long memory) {
         this.idx = System.currentTimeMillis();
         this.testTag = testTag;
         this.preEncodingTime = preEncodingTime;
@@ -51,6 +52,7 @@ class CSVData{
         this.numberOfConcepts = numberOfConcepts;
         this.numberOfRelations = numberOfRelations;
         this.totalTime = totalTime;
+        this.memory = memory;
     }
 
     @Override
@@ -58,7 +60,7 @@ class CSVData{
         return idx + ", " + testTag + ", " + numberOfConcepts + ", " + numberOfRelations + ", " + numberOfElements
                 + ", " + numberOfRoles + ", " + numberOfScenes + ", " + preEncodingTime  + ", " + preRecognitionTime
                 + ", " + learningTime + ", " + structuringTime + ", " + postEncodingTime + ", " + postRecognitionTime
-                + ", " + totalTime + ";";
+                + ", " + totalTime + ", " + memory + ";";
     }
 }
 
