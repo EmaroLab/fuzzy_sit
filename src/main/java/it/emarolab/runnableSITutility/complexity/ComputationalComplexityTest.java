@@ -228,7 +228,7 @@ class SimulationTask implements Runnable {
                     " (time not spent for recognising and learning: " + (otherTime / 1000.0) + "sec).\n");
         } catch (Exception e){
             e.printStackTrace();
-            Logger.logError(e, "Erroro on test " + parameter.getTestLabel());
+            Logger.logError(e, "Error on test " + parameter.getTestLabel());
         }
     }
 
@@ -251,11 +251,10 @@ class SimulationTask implements Runnable {
                 }
             }
         }
-
         Runtime runtime = Runtime.getRuntime();
         long memory = runtime.totalMemory() - runtime.freeMemory(); // Calculate the used memory by the entire process
-        runtime.gc(); // suggests the JSM to run the garbage collector
         mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended. The entire process used " + memory/1048576 + "MB");
+        runtime.gc(); // suggests the JSM to run the garbage collector
 
         logger.close();
         synchronized (tasks) {
