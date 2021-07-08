@@ -92,7 +92,7 @@ To run other examples or to generate a jar of FuzzySIT as a library for your dev
 # FuzzySIT Ontology Setup
 SIT requires a FuzzyDL ontology (i.e., a file `.fuzzydl`) that is formatted in a specific manner.
 
-It requires an **header** as
+It requires a header as
 ```
 (define-fuzzy-logic zadeh)
 
@@ -145,7 +145,7 @@ The core of FuzzySIT is composed by three main classes
      - access and visualize the hierarchy of scenes structured on the basis of the ontology,
      - save or lead ontologies.
    
-# Runnables: Tests, Extensions and Examples
+## Runnables: Tests, Extensions and Examples
 
 The FuzzySIT package comes also with some utilities used for testing purposes.
 In particular, in the `runnableSITutility` contains the following runnable scripts.
