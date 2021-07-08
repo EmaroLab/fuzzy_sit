@@ -206,7 +206,7 @@ class SimulationTask implements Runnable {
 
                 // store memory usage of this thread (it is an estimation)
                 long memory = ((ThreadMXBean) ManagementFactory.getThreadMXBean()).getThreadAllocatedBytes(thread.getId());
-                logger.log("used memory " + memory/1048576 + "MB");
+                logger.log("MEMORY used by this thread " + memory/1048576 + "MB");
 
                 long total_time = System.currentTimeMillis() - st;
                 Logger.csvWrite(new CSVData(parameter.getTestLabel(), parameter.getConcepts().size(),
@@ -250,7 +250,7 @@ class SimulationTask implements Runnable {
         }
         Runtime runtime = Runtime.getRuntime();
         long memory = runtime.totalMemory() - runtime.freeMemory(); // Calculate the used memory by the entire process
-        mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended. The entire process used " + memory/1048576 + "MB");
+        mainLogger.log("Simulation " + globalCnt + "." + ".x..x" + " ended. The entire process is using " + memory/1048576 + "MB");
         runtime.gc(); // suggests the JSM to run the garbage collector
 
         logger.close();

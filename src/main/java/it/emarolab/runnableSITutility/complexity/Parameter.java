@@ -31,8 +31,7 @@ class RawParameters {
 
     @Override
     public String toString() {
-        return "Raw{" +
-                "-(P)elements=" + elements +
+        return  "{-(P)elements=" + elements +
                 ", -(P)scenes=" + scenes +
                 ", -(P)concepts=" + concepts +
                 ", -(P)relations=" + relations +
