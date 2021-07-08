@@ -150,36 +150,30 @@ public class SITTBox
     }
     // common constructor for implement this TBox manager
     private void initialise(String tboxPath, String confFile){
-        try {
-            // at the beginning set the auxiliary file as the original file
-            this.syntaxLearnedFile = tboxPath;
-            // never solve T-Box !!!! This make error when a new class in learned at run time.
-            // After each leaning operation you should manipulated a fresh T-Box. This justify the auxiliary file.
-            tbox = readFromFile( tboxPath, confFile, true);
-            // use a copy of the T-Box, which can be solved
-            KnowledgeBase kb = tbox.clone();
-            kb.solveKB();
-            // get the name of all the Scenes in the T-Box. Those are all the classes ψ ⊂ Scene
-            setScenes( kb);
-            // get the name of all spatial property in the T-Box. Those are obtained by all the classes Δ ⊂ SpatialObject.
-            setSpatial( kb);
-            // query the implication hierarchy between all the Scene ψ
-            buildHierarchy( kb);
-        } catch (FuzzyOntologyException | InconsistentOntologyException e) {
-            e.printStackTrace();
+        synchronized (this.onSync) {
+            try {
+                // at the beginning set the auxiliary file as the original file
+                this.syntaxLearnedFile = tboxPath;
+                // never solve T-Box !!!! This make error when a new class in learned at run time.
+                // After each leaning operation you should manipulated a fresh T-Box. This justify the auxiliary file.
+                tbox = readFromFile(tboxPath, confFile);
+                // use a copy of the T-Box, which can be solved
+                KnowledgeBase kb = tbox.clone();
+                kb.solveKB();
+                // get the name of all the Scenes in the T-Box. Those are all the classes ψ ⊂ Scene
+                setScenes(kb);
+                // get the name of all spatial property in the T-Box. Those are obtained by all the classes Δ ⊂ SpatialObject.
+                setSpatial(kb);
+                // query the implication hierarchy between all the Scene ψ
+                buildHierarchy(kb);
+            } catch (FuzzyOntologyException | InconsistentOntologyException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     // called in constructor, it reads the ontology from file.
-    private KnowledgeBase readFromFile(String tboxPath, String confFile, boolean shoudlSync) {
-        if(shoudlSync) {
-            synchronized (this.onSync) {
-                return _readFromFile(tboxPath, confFile);
-            }
-        } else
-            return _readFromFile(tboxPath, confFile);
-    }
-    private KnowledgeBase _readFromFile(String tboxPath, String confFile){
+    private KnowledgeBase readFromFile(String tboxPath, String confFile){
         long time = System.currentTimeMillis();
         syntaxFile = tboxPath;
         configurationFile = confFile;
@@ -456,7 +450,7 @@ public class SITTBox
             if (!syntaxFile.contains(LEARNER_FILE_AUXILIARY_PATH))
                 this.syntaxLearnedFile = syntaxFile + LEARNER_FILE_AUXILIARY_PATH;
             saveTbox(syntaxLearnedFile, newSceneName, representation.getObjectDistribution());
-            tbox = readFromFile(syntaxLearnedFile, configurationFile, false);
+            tbox = readFromFile(syntaxLearnedFile, configurationFile);
             KnowledgeBase kb = tbox.clone();  // should it be synchronized statically among all threads using an instance of SITTBox?
             try {
                 kb.solveKB();
