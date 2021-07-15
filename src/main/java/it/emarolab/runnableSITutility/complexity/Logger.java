@@ -32,7 +32,7 @@ class CSVData{
                 "\t L) The encoding time after having learned a new scene,\n" +
                 "\t M) The recognition time after having learned a new scene,\n" +
                 "\t N) The total time,\n" +
-                "\t O) Computer memory usage in Byte,\n" +
+                "\t O) Computer memory usage in bytes,\n" +
                 "\t P) Number of categories pre-recognised,\n" +
                 "\t Q) Number of categories post-recognised";
     }
@@ -63,7 +63,7 @@ class CSVData{
 
     @Override
     public String toString() {
-        return idx + ", " + testTag + ", " + numberOfConcepts + ", " + numberOfRelations + ", " + numberOfElements
+        return idx + ", \"" + testTag + "\", " + numberOfConcepts + ", " + numberOfRelations + ", " + numberOfElements
                 + ", " + numberOfRoles + ", " + numberOfScenes + ", " + preEncodingTime  + ", " + preRecognitionTime
                 + ", " + learningTime + ", " + structuringTime + ", " + postEncodingTime + ", " + postRecognitionTime
                 + ", " + totalTime + ", " + memory + ", " + preRecognitionSize + ", " + postRecognitionSize + ";";

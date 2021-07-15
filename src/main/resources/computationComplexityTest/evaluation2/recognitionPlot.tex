@@ -1,0 +1,664 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.972\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=0,
+xmax=21,
+xtick={0,2,4,6,8,10,12,14,16,18,20,22},
+xlabel style={font=\color{white!15!black}},
+xlabel={Number of Scenes in Memory},
+ymin=0,
+ymax=110,
+ytick={  0,  10,  20,  30,  40,  50,  60,  70,  80,  90, 100, 110},
+ylabel style={font=\color{white!15!black}},
+ylabel={Computation Time [seconds]},
+axis background/.style={fill=white},
+title style={font=\bfseries},
+% title={All Recognition AVG},
+axis x line*=bottom,
+axis y line*=left,
+xmajorgrids,
+ymajorgrids
+]
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+0	0.562\\
+1	1.419\\
+2	1.132\\
+3	1.304\\
+4	1.374\\
+5	1.236\\
+6	1.471\\
+7	1.733\\
+8	2.074\\
+9	1.792\\
+10	1.504\\
+11	1.39\\
+12	1.655\\
+13	2.198\\
+14	2.011\\
+15	1.571\\
+16	2.246\\
+17	3.448\\
+18	3.278\\
+19	3.524\\
+20	2.356\\
+21	3.966\\
+};
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.033\\
+1	4.713\\
+2	3.81\\
+3	4.129\\
+4	4.714\\
+5	4.967\\
+6	4.547\\
+7	4.451\\
+8	5.009\\
+9	4.603\\
+10	5.681\\
+11	5.235\\
+12	5.952\\
+13	6.51\\
+14	6.906\\
+15	9.169\\
+16	9.65\\
+17	7.729\\
+18	7.28\\
+19	13.677\\
+20	13.028\\
+21	15.744\\
+};
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.908\\
+1	10.1685\\
+2	9.5105\\
+3	9.503\\
+4	9.3065\\
+5	10.438\\
+6	10.2725\\
+7	10.455\\
+8	11.4745\\
+9	10.8735\\
+10	12.6725\\
+11	13.184\\
+12	12.813\\
+13	14.892\\
+14	16.6685\\
+15	17.0705\\
+16	16.201\\
+17	18.996\\
+18	17.991\\
+19	28.193\\
+20	29.618\\
+21	36.072\\
+};
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+0	2.5735\\
+1	15.4425\\
+2	16.985\\
+3	15.7015\\
+4	17.29\\
+5	17.9805\\
+6	16.272\\
+7	17.31\\
+8	18.901\\
+9	18.415\\
+10	17.752\\
+11	19.261\\
+12	19.935\\
+13	19.544\\
+14	22.394\\
+15	24.819\\
+16	26.028\\
+17	26.006\\
+18	30.964\\
+19	34.69\\
+20	39.284\\
+21	47.649\\
+};
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.232\\
+1	7.704\\
+2	6.32\\
+3	6.512\\
+4	6.749\\
+5	7.592\\
+6	6.779\\
+7	7.65\\
+8	7.3\\
+9	8.614\\
+10	7.715\\
+11	8.858\\
+12	9.006\\
+13	10.309\\
+14	10.132\\
+15	11.821\\
+16	13.364\\
+17	16.928\\
+18	15.959\\
+19	19.797\\
+20	25.097\\
+21	27.282\\
+};
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.186\\
+1	2.982\\
+2	3.1645\\
+3	3.256\\
+4	3.12\\
+5	3.0655\\
+6	3.121\\
+7	3.1085\\
+8	2.49\\
+9	3.75\\
+10	4.919\\
+11	4.9615\\
+12	5.612\\
+13	6.3235\\
+14	5.632\\
+15	6.3755\\
+16	6.1075\\
+17	6.6435\\
+18	8.0235\\
+19	6.023\\
+20	11.603\\
+21	9.8\\
+};
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.786\\
+1	5.469\\
+2	5.775\\
+3	6.349\\
+4	5.102\\
+5	5.544\\
+6	5.053\\
+7	4.542\\
+8	5.454\\
+9	5.331\\
+10	7.338\\
+11	6.147\\
+12	7.202\\
+13	7.862\\
+14	9.406\\
+15	10.298\\
+16	11.316\\
+17	14.289\\
+18	18.582\\
+19	23.716\\
+20	24.277\\
+21	31.522\\
+};
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+0	3.422\\
+1	15.502\\
+2	20.672\\
+3	17.864\\
+4	20.63\\
+5	17.313\\
+6	19.676\\
+7	20.914\\
+8	21.565\\
+9	21.766\\
+10	23.965\\
+11	23.084\\
+12	21.237\\
+13	26.087\\
+14	25.646\\
+15	30.01\\
+16	31.669\\
+17	35.024\\
+18	36.158\\
+19	39.751\\
+20	50.207\\
+21	44.338\\
+};
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+0	4.461\\
+1	27.531\\
+2	32.344\\
+3	35.312\\
+4	33.034\\
+5	30.206\\
+6	32.029\\
+7	32.151\\
+8	31.569\\
+9	32.79\\
+10	30.266\\
+11	34.444\\
+12	39.174\\
+13	41.11\\
+14	41.621\\
+15	42.297\\
+16	48.654\\
+17	52.396\\
+18	54.534\\
+19	43.721\\
+20	51.966\\
+21	54.181\\
+};
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+0	3.847\\
+1	24.982\\
+2	25.603\\
+3	27.075\\
+4	26.6885\\
+5	27.905\\
+6	26.701\\
+7	28.2025\\
+8	27.9515\\
+9	27.314\\
+10	28.9665\\
+11	29.4545\\
+12	30.014\\
+13	30.8065\\
+14	32.0465\\
+15	34.401\\
+16	38.331\\
+17	39.623\\
+18	41.613\\
+19	44.5435\\
+20	50.0185\\
+21	55.6945\\
+};
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.644\\
+1	5.586\\
+2	5.29\\
+3	5.153\\
+4	5.584\\
+5	6.42\\
+6	6.417\\
+7	5.759\\
+8	6.444\\
+9	6.262\\
+10	6.892\\
+11	7.425\\
+12	7.33\\
+13	8.443\\
+14	9.939\\
+15	11.759\\
+16	7.579\\
+17	11.069\\
+18	13.9\\
+19	14.197\\
+20	18.466\\
+21	17.7335\\
+};
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+0	2.961\\
+1	13.208\\
+2	12.818\\
+3	13.46\\
+4	16.192\\
+5	16.119\\
+6	13.272\\
+7	18.079\\
+8	15.297\\
+9	14.776\\
+10	16.651\\
+11	17.76\\
+12	19.711\\
+13	19.406\\
+14	24.032\\
+15	25.092\\
+16	14.846\\
+17	31.073\\
+18	32.75\\
+19	32.676\\
+20	35.4275\\
+21	40.2985\\
+};
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+0	5.619\\
+1	29.733\\
+2	28.611\\
+3	25.266\\
+4	28.632\\
+5	31.641\\
+6	30.713\\
+7	28.546\\
+8	30.658\\
+9	29.119\\
+10	30.741\\
+11	29.826\\
+12	33.824\\
+13	39.736\\
+14	35.227\\
+15	46.145\\
+16	45.539\\
+17	33.77\\
+18	37.3025\\
+19	44.0475\\
+20	40.6175\\
+21	49.6945\\
+};
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+0	4.259\\
+1	17.5455\\
+2	17.049\\
+3	18.446\\
+4	18.861\\
+5	17.2975\\
+6	16.6445\\
+7	18.46\\
+8	15.776\\
+9	17.9\\
+10	18.4135\\
+11	24.0085\\
+12	21.288\\
+13	22.381\\
+14	23.774\\
+15	27.169\\
+16	29.706\\
+17	32.17\\
+18	31.772\\
+19	32.4495\\
+20	43.2605\\
+21	42.5195\\
+};
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+0	5.6295\\
+1	40.028\\
+2	38.5055\\
+3	38.199\\
+4	38.0825\\
+5	38.138\\
+6	37.8935\\
+7	39.474\\
+8	39.027\\
+9	39.6085\\
+10	39.947\\
+11	41.106\\
+12	41.8285\\
+13	43.0615\\
+14	46.8875\\
+15	47.739\\
+16	44.121\\
+17	52.7565\\
+18	54.098\\
+19	62.5195\\
+20	64.912\\
+21	75.1055\\
+};
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+0	1.2\\
+1	3.713\\
+2	3.363\\
+3	3.697\\
+4	4.644\\
+5	4.155\\
+6	4.324\\
+7	4.311\\
+8	4.633\\
+9	4.673\\
+10	5.675\\
+11	5.296\\
+12	6.222\\
+13	5.461\\
+14	7.248\\
+15	5.56\\
+16	6.787\\
+17	6.5035\\
+18	9.0655\\
+10	13.9855\\
+20	13.7765\\
+21	16.7615\\
+};
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+0	3.087\\
+1	10.5505\\
+2	10.8765\\
+3	10.4835\\
+4	7.031\\
+5	7.789\\
+6	6.842\\
+7	15.344\\
+8	9.983\\
+9	8.446\\
+10	9.464\\
+11	10.177\\
+12	11.694\\
+13	9.299\\
+14	9.77\\
+15	10.557\\
+16	15.408\\
+17	20.256\\
+18	17.02\\
+19	19.142\\
+20	17.946\\
+21	27.583\\
+};
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+0	6.575\\
+1	35.511\\
+2	26.1685\\
+3	26.735\\
+4	28.2065\\
+5	29.485\\
+6	26.2505\\
+7	30.066\\
+8	29.673\\
+9	28.3075\\
+10	30.9955\\
+11	33.9755\\
+12	31.6075\\
+13	31.403\\
+14	34.403\\
+15	37.6615\\
+16	35.8575\\
+17	48.933\\
+18	46.307\\
+19	54.378\\
+20	58.473\\
+21	60.614\\
+};
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+0	7.471\\
+1	48.589\\
+2	47.38\\
+3	51.04\\
+4	54.314\\
+5	52.577\\
+6	50.645\\
+7	50.896\\
+8	55.046\\
+9	55.102\\
+10	56.997\\
+11	59.621\\
+12	57.949\\
+13	60.068\\
+14	64.722\\
+15	74.389\\
+16	84.208\\
+17	66.759\\
+18	60.296\\
+19	70.361\\
+20	73.2835\\
+21	68.207\\
+};
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+0	7.674\\
+1	53.2545\\
+2	54.18\\
+3	50.9275\\
+4	50.152\\
+5	51.8795\\
+6	50.445\\
+7	51.373\\
+8	52.4575\\
+9	52.9295\\
+10	51.939\\
+11	53.736\\
+12	58.207\\
+13	53.2195\\
+14	55.3485\\
+15	60.147\\
+16	55.932\\
+17	59.819\\
+18	59.872\\
+19	79.7685\\
+20	85.229\\
+21	86.7665\\
+};
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+0	2.067\\
+1	5.005\\
+2	4.3945\\
+3	4.6415\\
+4	4.6115\\
+5	4.9325\\
+6	5.135\\
+7	5.2095\\
+8	5.0795\\
+9	4.961\\
+10	5.6015\\
+11	5.644\\
+12	7.2315\\
+13	8.256\\
+14	6.637\\
+15	9.442\\
+16	10.7425\\
+17	12.176\\
+18	8.4955\\
+19	12.5175\\
+20	14.7575\\
+21	12.147\\
+};
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+0	4.0865\\
+1	13.5415\\
+2	14.064\\
+3	13.7675\\
+4	13.9885\\
+5	13.4485\\
+6	13.841\\
+7	14.802\\
+8	15.3225\\
+9	15.1705\\
+10	15.485\\
+11	17.0695\\
+12	16.482\\
+13	18.112\\
+14	19.567\\
+15	21.099\\
+16	23.2675\\
+17	18.9635\\
+18	25.7585\\
+19	30.6135\\
+20	35.3905\\
+21	14.435\\
+};
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+0	5.988\\
+1	26.296\\
+2	25.814\\
+3	25.538\\
+4	26.99\\
+5	27.2735\\
+6	26.73\\
+7	27.452\\
+8	27.548\\
+9	28.9125\\
+10	29.3925\\
+11	28.555\\
+12	29.9335\\
+13	32.0405\\
+14	29.264\\
+15	35.3245\\
+16	38.57\\
+17	39.998\\
+18	38.2805\\
+19	45.7105\\
+20	51.8815\\
+21	35.8165\\
+};
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+0	8.154\\
+1	42.374\\
+2	42.1945\\
+3	41.715\\
+4	44.265\\
+5	44.7695\\
+6	45.1745\\
+7	44.119\\
+8	44.2665\\
+9	45.1775\\
+10	45.3065\\
+11	47.6335\\
+12	44.2085\\
+13	44.99\\
+14	51.541\\
+15	49.161\\
+16	53.9885\\
+17	48.627\\
+18	58.314\\
+19	52.301\\
+20	54.3415\\
+21	78.705\\
+};
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+0	9.839\\
+1	65.0035\\
+2	66.5995\\
+3	63.732\\
+4	64.738\\
+5	64.0195\\
+6	65.6185\\
+7	65.566\\
+8	66.526\\
+9	67.0855\\
+10	66.1945\\
+11	65.129\\
+12	69.723\\
+13	71.8795\\
+14	72.8075\\
+15	74.403\\
+16	79.2785\\
+17	82.272\\
+18	83.8045\\
+19	77.712\\
+20	93.9905\\
+21	108.7285\\
+};
+\end{axis}
+\end{tikzpicture}%

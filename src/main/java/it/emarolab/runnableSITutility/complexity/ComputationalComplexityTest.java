@@ -179,8 +179,8 @@ class SimulationTask implements Runnable {
                 logger.log("New scene elements (size: " + objects.size() + ") " + objects);
                 logger.log("New scene relations (size: " + relations.size() + ") " + relations);
 
-                // Pre encode (i.e., before learning)
-                SITABox rPre = new SITABox(h, objects, relations);
+                // Pre encode and recognise (i.e., before learning)
+                SITABox rPre = new SITABox(h, objects, relations);  // encode
                 Map<SceneHierarchyVertex, Double> preRec = rPre.getRecognitions();
                 logger.log("ENCODE before learning in " +  rPre.getEncodingTime() + "ms");
                 logger.log("RECOGNISED before Learning in " + rPre.getRecognitionTime() + "ms as: " + preRec);
@@ -193,14 +193,14 @@ class SimulationTask implements Runnable {
                 long learnTime = System.currentTimeMillis() - refTime;
                 logger.log("LEARNED in " + learnTime + "ms with: " + s.getDefinition());
                 // structuring
-                KnowledgeBase kb = h.closeReopen(newSceneName, rPre, tasks); // solve FuzzyDL bug
+                KnowledgeBase kb = h.closeReopen(newSceneName, rPre, tasks); // solve FuzzyDL bug and it is synchronise don `tasks`
                 refTime = System.currentTimeMillis();
                 h.updateEdges(kb); // structuring
                 long structuringTime = System.currentTimeMillis() - refTime;
                 logger.log("STRUCTURED in " + structuringTime + "ms");
 
-                // Post encode (i.e., before learning)
-                SITABox rPost = new SITABox(h, objects, relations);
+                // Post encode and recognise (i.e., before learning)
+                SITABox rPost = new SITABox(h, objects, relations);  // encode
                 Map<SceneHierarchyVertex, Double> postRec = rPost.getRecognitions();
                 logger.log("ENCODE after learning in " + rPost.getEncodingTime() + "ms");
                 logger.log("RECOGNISED after Learning in " + rPost.getRecognitionTime() + "ms as: " + postRec);

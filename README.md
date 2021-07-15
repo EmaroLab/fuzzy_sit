@@ -115,8 +115,8 @@ Later you should define the type of relations among elements, e.g., `Right` and 
 (range  isLeftOf  Object)
 (domain isLeftOf  SpatialObject)
 ```
-Note that this implementation of fuzzyDL is case-sensitive and parses based on the CamelCase standard
-(a known issue occurs when variables ends with a number, e.g., `Right1`).
+**Note** that this implementation of fuzzyDL is case-sensitive, and it parses variable names with the *CamelCase* standard
+(a known issue occurs when variables end with a number, e.g., `Right1`).
 Always add `is` to the definition of the relations, while `Of` is optional.
 
 Finally, we should define the features used by SIT to learn. 
@@ -188,14 +188,14 @@ where
 The test is performed for each combination of `concepts`, `relations`, `scenes` and `elements`. 
 The results are store as `csv` files in the folder `src/main/java/resources/ComputationComplexityTest/log`.
 CSV data is all express in millisecond or integer (e.g., for indices) and arranged in columns ordered as
-CSV data is all express in millisecond or integer (i.e., indices) and arranged in columns as: `A,B,C,...,O` where  
+CSV data is all express in millisecond or integer (i.e., indices) and arranged in columns as: `A,B,C,...,Q` where  
  - A) An ordered identified based on the creation timestamp,  
  - B) A string identifying the ontology complexity (i.e., `C-D`),  
  - C) The Number of concepts in the ontology,  
  - D) The Number of relations in the ontology,  
  - E) Number of elements in the scene,  
  - F) Number of roles in the scene,  
- - G) Number of items in the memory,  
+ - G) Number of items in the memory (it should be an array with all equals elements, which size identifies the number of trials, and each element the nodes in memory when to stop),  
  - H) The encoding time before having learned a new scene,  
  - I) The recognition time before having learned a new scene,  
  - J) The learning time,  
@@ -203,7 +203,7 @@ CSV data is all express in millisecond or integer (i.e., indices) and arranged i
  - L) The encoding time after having learned a new scene,  
  - M) The recognition time after having learned a new scene,  
  - N) The total time,  
- - O) Computer memory usage in Byte,
+ - O) Thread memory usage in bytes (this is an [approximation](https://docs.oracle.com/javase/7/docs/jre/api/management/extension/com/sun/management/ThreadMXBean.html#getThreadAllocatedBytes(long)) based on `ThreadMXBean.getThreadAllocatedBytes`, which might be unreadable),
  - P) Number of categories pre-recognised, 
  - Q) Number of categories post-recognised.
 

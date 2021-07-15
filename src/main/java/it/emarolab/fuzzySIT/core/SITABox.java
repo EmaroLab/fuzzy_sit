@@ -218,7 +218,7 @@ public class SITABox
             } else
                 log( FLAG_LOG_VERBOSE, q.getTotalTime(),actualScene + " ∉ " + stored);
         }
-        recognitionTime = System.currentTimeMillis() - time;
+        recognitionTime = System.currentTimeMillis() - initialTime;  //////////// time "£!$£$£"
         log( initialTime, "scene recognition completed, results size " + recognised.size());
         return recognised;
     }
