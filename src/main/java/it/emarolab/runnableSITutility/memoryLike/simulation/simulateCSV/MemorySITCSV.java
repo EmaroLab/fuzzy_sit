@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MemorySITCSV {
 
-    public static final String DATA_PATH = FuzzySITBase.RESOURCES_PATH + "memory_log/positions.csv";
+    public static final String DATA_PATH = FuzzySITBase.RESOURCES_PATH + "memoryLog/positions.csv";
 
     public static final Integer CONSOLIDATE_FORGET_RATE = 5; // consolidates and forgets every n experiences (affects SimpleMemory.EXPERIENCE_REINFORCE)
     public static final Integer INPUT_RATE = 1; // process a scene every n experiences

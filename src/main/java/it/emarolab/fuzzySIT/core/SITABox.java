@@ -57,15 +57,14 @@ public class SITABox
      * @param objects the set of object of the scene to describe.
      * @param relations the set of spatial relations of the scene to describe.
      */
-    public SITABox(SITTBox hierarchy, Set<? extends SpatialObject> objects,
-                   Set<SpatialRelation> relations){
+    public SITABox(SITTBox hierarchy, Set<? extends SpatialObject> objects, Set<SpatialRelation> relations){
         long startTime = System.currentTimeMillis();
         this.tbox = hierarchy;
         this.abox = hierarchy.getTboxCopy(); // always starts with a fresh kb
         try {
             addSpatialRepresentation( objects, relations);
             solveAbox();
-            definition = querySigmaCount( objects);
+            definition = querySigmaCount( objects);  // todo set it as possible constructor input
             scene = addSceneIndividual( definition);
             encodingTime = System.currentTimeMillis() - startTime;
             solveAboxAssertions();

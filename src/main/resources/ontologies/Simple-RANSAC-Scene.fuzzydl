@@ -1,0 +1,37 @@
+(define-fuzzy-logic zadeh)
+
+
+
+(define-primitive-concept Object *top*)
+(define-primitive-concept Scene  *top*)
+(disjoint Object Scene)
+(disjoint SpatialObject Scene)
+
+
+
+(implies Sphere Object)
+(implies Cone Object)
+(implies Cylinder Object)
+(implies Plane Object)
+
+
+
+(range  isRightOf Object)
+(domain isRightOf SpatialObject)
+
+(range  isFrontOf Object)
+(domain isFrontOf SpatialObject)
+
+
+
+(define-concept SphereRight  (and Sphere (some isRightOf  SpatialObject)))
+(define-concept SphereFront  (and Sphere (some isFrontOf  SpatialObject)))
+
+(define-concept ConeRight  (and Cone (some isRightOf  SpatialObject)))
+(define-concept ConeFront  (and Cone (some isFrontOf  SpatialObject)))
+
+(define-concept CylinderRight  (and Cylinder (some isRightOf  SpatialObject)))
+(define-concept CylinderFront  (and Cylinder (some isFrontOf  SpatialObject)))
+
+(define-concept PlaneRight  (and Plane (some isRightOf  SpatialObject)))
+(define-concept PlaneFront  (and Plane (some isFrontOf  SpatialObject)))

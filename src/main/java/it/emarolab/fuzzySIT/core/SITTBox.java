@@ -88,6 +88,7 @@ public class SITTBox
     private JFrame frame; // used for visualising the hierarchy, debugging purposes.
     private static String toWrite  = NEW_LINE; // lines to add in the syntax to save the information about the object type distributions
     private final Object onSync; // used for synchronise the reading ad writing to file through fuzzyDL
+    private double fuzziness = FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT;
 
     /**
      * Initialises this T-Box by using the default ontology ({@link #FILE_ONTOLOGY_LOAD}) and
@@ -378,8 +379,7 @@ public class SITTBox
                 Concept c = kb.getConcept(s);
                 Query q = new MinSubsumesQuery(superClass, c, logic);
                 Solution sol = q.solve( kb);
-                log( FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + c + " ⊂ " + superConcept + " ("
-                        + sol.getSolution() + ")");
+                log( FLAG_LOG_VERBOSE, q.getTotalTime(), "\t?? " + c + " ⊂ " + superConcept + " (" + sol.getSolution() + ")");
                 double minSubConceptDegree = sol.getSolution();
                 if (minSubConceptDegree >= 1) {
                     out.add(s);
@@ -507,7 +507,7 @@ public class SITTBox
         try {
             // set right shoulder based on sigma count
             double top = sigmaCnt.getRoundedCount();
-            double bottom = top - ((ROLE_SHOULDER_BOTTOM_PERCENT * top) / 100);
+            double bottom = top - ((this.fuzziness * top) / 100);
             bottom = DoubleFormatter.roundDegree(bottom);
             // set the name (used also on parsing during semantic build)
             String t = String.valueOf(top).replace(".", REPLACE_DOUBLE_POINT);
@@ -757,6 +757,10 @@ public class SITTBox
         //Parser.reset();
         FuzzydlToOwl2 f = new FuzzydlToOwl2( fuzzydlPath, owlPath);
         f.run();
+    }
+
+    public void setFuzziness(double fuzziness){
+        this.fuzziness = fuzziness;
     }
 
     /*

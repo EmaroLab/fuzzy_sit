@@ -87,7 +87,14 @@ Finally, run the [`SceneHierarchyTest`](https://github.com/EmaroLab/fuzzy_sit/bl
 ```
 If your machine does not have a graphical user interface, the example will fail at the end of the script 
 
-To run other examples or to generate a jar of FuzzySIT as a library for your development we suggest to open the `fuzzy-sit` project with an IDE (e.g., [Intellij IDEA](https://www.jetbrains.com/idea/)) configured based on your `.bashrc`.
+If the example gives an error like 
+```
+Exception in thread "main" java.lang.NullPointerException
+at it.emarolab.fuzzySIT.core.SITTBox.querySubConcept(SITTBox.java:382)
+```
+it might be the case that the `guroby path` is not correctly configured.
+
+To run other examples or to generate a jar of FuzzySIT as a library for your development we suggest to open the `fuzzy-sit` project with an IDE (e.g., [Intellij IDEA](https://www.jetbrains.com/idea/)) configured based on your `.bashrc` (e.g., opened from terminal in Ubuntu).
 
 # FuzzySIT Ontology Setup
 SIT requires a FuzzyDL ontology (i.e., a file `.fuzzydl`) that is formatted in a specific manner.
@@ -163,7 +170,12 @@ Is a graphical user interface to simulate 2D arranges of objects.
 It is based on the `JavaFx` library, and it is currently commented since deprecated.
 
 #### 4. `SceneHierarchyTest`
-Show a simulation of the results published in the paper concerning the hierarchy of spatial scenes in memory.
+Show a simulation of object configured as shown in the paper, and it concerns the hierarchy of spatial scenes in memory.
+This example is based on fuzzy degree given as input.
+
+#### 5. `SpatialSceneExample`
+Show a simulation of object configured as shown in the paper, and it concerns the hierarchy of spatial scenes in memory.
+This example is different from `SceneHierarchyTest` since it uses fuzzy kernels to compute degrees based on the 2D object positions.
 
 #### 5. `MemoryTest`
 Is a simulation done to publish results about a cognitive like memory, involving consolidation and forgetting of scene categories learned during time.

@@ -1,6 +1,7 @@
 package it.emarolab.runnableSITutility.example;
 
 import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyVertex;
 import it.emarolab.runnableSITutility.sceneRecustructor.MonteCarloInterface;
 import it.emarolab.fuzzySIT.core.SITABox;
 import it.emarolab.fuzzySIT.core.SITTBox;
@@ -236,98 +237,101 @@ public class SITExample {
         SITABox r;
         SITTBox h = new SITTBox(FuzzySITBase.RESOURCES_PATH + "ontologies/example_SIT_kb.fuzzydl");
 
-        format();
-        r = new SITABox(h, objects, relations);
-        h.learn( "Scene1", r);
-
-
         System.out.println("-------------------------  S1   ------------------------");
         // create S1 and recognise it
         formatS1();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S1
-        h.learn( "Scene1", r);
+        SceneHierarchyVertex learnedCategory = h.learn("Scene1", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S1 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
-
 
         System.out.println("-------------------------  S2   ------------------------");
         // create S2 and recognise it
         formatS2();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S2
-        h.learn( "Scene2", r);
+        learnedCategory = h.learn("Scene2", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S2 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
-
-
 
         System.out.println("-------------------------  S3   ------------------------");
         // create S3 and recognise it
         formatS3();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S3
-        h.learn( "Scene3", r);
+        learnedCategory = h.learn("Scene3", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S3 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
-
-
 
         System.out.println("-------------------------  S4   ------------------------");
         // create S4 and recognise it
         formatS4();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S4
-        h.learn( "Scene4", r);
+        learnedCategory = h.learn("Scene4", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S4 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
-
 
         System.out.println("-------------------------  S5   ------------------------");
         // create S5 and recognise it
         formatS5();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S5
-        h.learn( "Scene5", r);
+        learnedCategory = h.learn("Scene5", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S5 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
-
-
 
         System.out.println("-------------------------  S6   ------------------------");
         // create S6 and recognise it
         formatS6();
         r = new SITABox(h, objects, relations);
+        System.out.println(" Recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("------------------------- learn ------------------------");
         // learn S6
-        h.learn( "Scene6", r);
+        learnedCategory = h.learn("Scene6", r);
+        System.out.println(" Learning category with definition: " + learnedCategory.getDefinition());
         System.out.println("---------------------- recognition ---------------------");
         // recognise again S6 (hp: full recognition since learned)
-        new SITABox(h, objects, relations);
+        r = new SITABox(h, objects, relations);
+        System.out.println(" Re-recognising with " + r.getRecognitions() + " with max similarity " + r.getMaxSimilarity());
         System.out.println("--------------------------------------------------------");
 
-
-        System.out.println("-------------------------  show ------------------------");
+        System.out.println("------------------------  showing ----------------------");
         // shows the inferred and learned SIT scene hierarchy
         h.show();
         // saved the augmented ontology
         h.saveTbox(FuzzySITBase.RESOURCES_PATH + "ontologies/learnedTest.fuzzydl");
-
     }
 
 

@@ -37,6 +37,7 @@ public interface FuzzySITBase {
     String RESOURCES_PATH = "src/main/resources/";
     String FILE_FUZZYDL_CONFIG = RESOURCES_PATH + "fuzzyDL_CONFIG";
     String FILE_ONTOLOGY_LOAD = RESOURCES_PATH + "ontologies/example_SIT_kb.fuzzydl";
+    String FILE_HIERARCHY_LOG = RESOURCES_PATH + "hierarchyLog/";
 
     boolean FLAG_LOG_SHOW = false;
     boolean FLAG_LOG_VERBOSE = false;
@@ -66,7 +67,7 @@ public interface FuzzySITBase {
 
     double ROLE_SHOULDER_MIN = 0;
     double ROLE_SHOULDER_MAX = 20;
-    double ROLE_SHOULDER_BOTTOM_PERCENT = 40;// - x% (fuzziness parameter)
+    double ROLE_SHOULDER_BOTTOM_PERCENT = 70;// - x% (fuzziness parameter)
     String ROLE_SHOULDER_RESOLUTION = "#.##"; // defines the precision of the shoulder (eg, number of digits after point)
 
     int LOG_TIME_LENGTH = 20;

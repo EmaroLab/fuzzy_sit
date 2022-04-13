@@ -1,13 +1,21 @@
 package it.emarolab.runnableSITutility.example;
 
 import it.emarolab.fuzzySIT.FuzzySITBase;
+import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyEdge;
+import it.emarolab.fuzzySIT.core.hierarchy.SceneHierarchyVertex;
 import it.emarolab.runnableSITutility.sceneRecustructor.MonteCarloInterface;
 import it.emarolab.fuzzySIT.core.SITABox;
 import it.emarolab.fuzzySIT.core.SITTBox;
 import it.emarolab.fuzzySIT.core.axioms.SpatialObject;
 import it.emarolab.fuzzySIT.core.axioms.SpatialRelation;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -15,18 +23,7 @@ import java.util.Set;
 /**
  * The testing class for {@link SITTBox} and {@link SITABox}.
  * <p>
- *     This tester shows how it is possible to load an fuzzy SIT T-Box,
- *     define a static scene by specifying its objects and spatial relations.
- *     As well as show how it is possible to recognise and learn
- *     such a configuration.
- *     <br>
- *     This implementation is based on the example T-Box for
- *     the fuzzy SIT implementation available at:
- *     {@code src/main/resources/example_SIT_kb.fuzzydl}.
- *     <br>
- *     It format 6 different scenes (where their objects and relations
- *     have been set just for showing purposes). Then, it performs SIT:
- *     recognition, learning and recognition again, for all of such a scenes.
+ *     This example show a possible scenario based on the scenes and hierarchies shown in the paper.
  *
  * <div style="text-align:center;"><small>
  * <b>File</b>:        it.emarolab.SITutility.example.SceneHierarchyTest <br>
@@ -38,7 +35,6 @@ import java.util.Set;
  *
  * @see MonteCarloInterface
  */
-@SuppressWarnings("Duplicates")
 public class SceneHierarchyTest {
 
     public static Set<SpatialObject> objects = new HashSet<>(); // the set of objects in the SIT scene to test
@@ -46,17 +42,13 @@ public class SceneHierarchyTest {
     public static int objectcount; // the counter of the amount of objects in the SIT scene to test
 
     // the name of the types of objects in this example (π)
-    public static final String SPHERE = "Sphere";
     public static final String CONE = "Cone";
+    public static final String CYLINDER = "Cylinder";
+    public static final String PLANE = "Plane";
+    public static final String SPHERE = "Sphere";
     // the name of the spatial relations used in this example (ζ)
     public static final String RIGHT = "isRightOf";
-    public static final String LEFT = "isLeftOf";
     public static final String FRONT = "isFrontOf";
-    public static final String BEHIND = "isBehindOf";
-    // the name of individuals indicating objects in the scene
-    public static final String S1 = "s1";
-    public static final String S2 = "s1";
-    public static final String C = "c";
 
     // it is called before to format the scene. The input is the number of objects in the scene
     private static void clear( int cnt){
@@ -64,186 +56,198 @@ public class SceneHierarchyTest {
         relations.clear();
         objectcount = cnt;
     }
-    private static void formatObject() {
+
+    private static void formatS1() {
         clear(3);
-        objects.add(new SpatialObject(SPHERE, S1, fuzzyNoise(.9)));
-        objects.add(new SpatialObject(SPHERE, S2, fuzzyNoise(.9)));
-        objects.add(new SpatialObject(CONE, C, fuzzyNoise(.9)));
 
-        objects.add(new SpatialObject(SPHERE, C, fuzzyNoise(.1)));
-        objects.add(new SpatialObject(CONE, S1, fuzzyNoise(.1)));
-        objects.add(new SpatialObject(CONE, S2, fuzzyNoise(.1)));
+        objects.add(new SpatialObject(CYLINDER, "g1", fuzzyNoise(.8)));
+        objects.add(new SpatialObject(CONE, "g1", fuzzyNoise(.2)));
+
+        objects.add(new SpatialObject(CONE, "g2", fuzzyNoise(.7)));
+        objects.add(new SpatialObject(CYLINDER, "g2", fuzzyNoise(.2)));
+
+        objects.add(new SpatialObject(PLANE, "g3", fuzzyNoise(.9)));
+        objects.add(new SpatialObject(CYLINDER, "g3", fuzzyNoise(.08))); // ??
+        objects.add(new SpatialObject(SPHERE, "g3", fuzzyNoise(.08))); // ??
+
+        relations.add(new SpatialRelation("g1", RIGHT, "g2", fuzzyNoise(.65)));
+        relations.add(new SpatialRelation("g1", RIGHT, "g3", fuzzyNoise(.88)));
+
+        relations.add(new SpatialRelation("g1", FRONT, "g3", fuzzyNoise(.1)));
+
+        relations.add(new SpatialRelation("g2", RIGHT, "g3", fuzzyNoise(.48)));
+
+        relations.add(new SpatialRelation("g2", FRONT, "g1", fuzzyNoise(.74)));
+        relations.add(new SpatialRelation("g2", FRONT, "g3", fuzzyNoise(.77)));
     }
-    private static void formatStaticRelation(){
-        relations.add(new SpatialRelation(S1, RIGHT, S2, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(S2, LEFT, S1, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(S1, FRONT, S2, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(S2, BEHIND, S1, fuzzyNoise(.5)));
+
+    private static void formatS2(){
+        clear(2);
+
+        objects.add( new SpatialObject( CYLINDER, "g4", fuzzyNoise(.9)));
+        objects.add( new SpatialObject( CONE, "g4", fuzzyNoise(.2)));
+
+        objects.add( new SpatialObject( PLANE, "g5", fuzzyNoise(.8)));
+        objects.add(new SpatialObject(CYLINDER, "g5", fuzzyNoise(.08))); // ??
+        objects.add(new SpatialObject(SPHERE, "g5", fuzzyNoise(.08))); // ??
+
+        relations.add( new SpatialRelation( "g4", RIGHT, "g5", fuzzyNoise(.93)));
+        relations.add( new SpatialRelation( "g4", FRONT, "g5", fuzzyNoise(.11)));
     }
-    // manipulates the objects and relations set to represents a scene S1
-    private static String sceneId = "-1";
-    private static void formatBaseScene() { // sphere cone sphere (in diagonal)
-        sceneId = "A";
-        formatObject();
-        formatStaticRelation();
 
-        relations.add(new SpatialRelation(S1, FRONT, C, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(S1, RIGHT, C, fuzzyNoise(.5)));
+    private static void formatS3(){
+        clear(8);
 
-        relations.add(new SpatialRelation(S2, LEFT, C, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(S2, BEHIND, C, fuzzyNoise(.5)));
+        objects.add( new SpatialObject( CYLINDER, "g6", fuzzyNoise(.7)));
+        objects.add( new SpatialObject( CONE, "g6", fuzzyNoise(.1)));
 
-        relations.add(new SpatialRelation(C, BEHIND, S1, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(C, LEFT, S1, fuzzyNoise(.5)));
+        objects.add( new SpatialObject( SPHERE, "g7", fuzzyNoise(.93)));
+        objects.add(new SpatialObject(CYLINDER, "g7", fuzzyNoise(.08))); // ??
 
-        relations.add(new SpatialRelation(C, RIGHT, S2, fuzzyNoise(.5)));
-        relations.add(new SpatialRelation(C, FRONT, S2, fuzzyNoise(.5)));
+        objects.add( new SpatialObject( SPHERE, "g8", fuzzyNoise(.87)));
+        objects.add(new SpatialObject(PLANE, "g8", fuzzyNoise(.08))); // ??
+
+        objects.add( new SpatialObject( CYLINDER, "g9", fuzzyNoise(.82))); // * union with scene 1 (ε1: 0.8)
+        objects.add( new SpatialObject( CONE, "g9", fuzzyNoise(.19))); // * (ε1: 0.2)
+
+        objects.add( new SpatialObject( CONE, "g10", fuzzyNoise(.7))); // * (ε1: 0.7)
+        objects.add( new SpatialObject( CYLINDER, "g10", fuzzyNoise(.24))); // * (ε1: 0.2)
+
+        objects.add( new SpatialObject( PLANE, "g11", fuzzyNoise(.88))); // * (ε1: 0.9)
+
+        objects.add( new SpatialObject( CYLINDER, "g12", fuzzyNoise(.78)));
+        objects.add( new SpatialObject( CONE, "g12", fuzzyNoise(.18)));
+        objects.add(new SpatialObject(SPHERE, "g12", fuzzyNoise(.08))); // ??
+
+        objects.add( new SpatialObject( SPHERE, "g13", fuzzyNoise(.92)));
+        objects.add(new SpatialObject(CYLINDER, "g13", fuzzyNoise(.08))); // ??
+
+        relations.add( new SpatialRelation( "g6", RIGHT, "g7", fuzzyNoise(.56)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g8", fuzzyNoise(.72)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g9", fuzzyNoise(.99)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g10", fuzzyNoise(.76)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g11", fuzzyNoise(.68)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g12", fuzzyNoise(.99)));
+        relations.add( new SpatialRelation( "g6", RIGHT, "g13", fuzzyNoise(.73)));
+
+        relations.add( new SpatialRelation( "g6", FRONT, "g7", fuzzyNoise(.86)));
+        relations.add( new SpatialRelation( "g6", FRONT, "g9", fuzzyNoise(.09)));
+        relations.add( new SpatialRelation( "g6", FRONT, "g11", fuzzyNoise(.18)));
+        relations.add( new SpatialRelation( "g6", FRONT, "g12", fuzzyNoise(.11)));
+
+        relations.add( new SpatialRelation( "g7", RIGHT, "g8", fuzzyNoise(.66)));
+        relations.add( new SpatialRelation( "g7", RIGHT, "g9", fuzzyNoise(.91)));
+        relations.add( new SpatialRelation( "g7", RIGHT, "g10", fuzzyNoise(.72)));
+        relations.add( new SpatialRelation( "g7", RIGHT, "g11", fuzzyNoise(.81)));
+        relations.add( new SpatialRelation( "g7", RIGHT, "g12", fuzzyNoise(.97)));
+        relations.add( new SpatialRelation( "g7", RIGHT, "g13", fuzzyNoise(.69)));
+
+        relations.add( new SpatialRelation( "g8", RIGHT, "g9", fuzzyNoise(.56)));
+        relations.add( new SpatialRelation( "g8", RIGHT, "g10", fuzzyNoise(.79)));
+        relations.add( new SpatialRelation( "g8", RIGHT, "g11", fuzzyNoise(.57)));
+        relations.add( new SpatialRelation( "g8", RIGHT, "g12", fuzzyNoise(.83)));
+        relations.add( new SpatialRelation( "g8", RIGHT, "g13", fuzzyNoise(.61)));
+
+        relations.add( new SpatialRelation( "g8", FRONT, "g6", fuzzyNoise(.25)));
+        relations.add( new SpatialRelation( "g8", FRONT, "g7", fuzzyNoise(.39)));
+        relations.add( new SpatialRelation( "g8", FRONT, "g9", fuzzyNoise(.72)));
+        relations.add( new SpatialRelation( "g8", FRONT, "g11", fuzzyNoise(.54)));
+        relations.add( new SpatialRelation( "g8", FRONT, "g12", fuzzyNoise(.40)));
+
+        relations.add( new SpatialRelation( "g9", RIGHT, "g10", fuzzyNoise(.68))); // * (ε1: 0.65)
+        relations.add( new SpatialRelation( "g9", RIGHT, "g11", fuzzyNoise(.88))); // * (ε1: 0.88) !!!
+        relations.add( new SpatialRelation( "g9", RIGHT, "g12", fuzzyNoise(.93)));
+        relations.add( new SpatialRelation( "g9", RIGHT, "g13", fuzzyNoise(.70)));
+
+        relations.add( new SpatialRelation( "g9", FRONT, "g7", fuzzyNoise(.47)));
+        relations.add( new SpatialRelation( "g9", FRONT, "g11", fuzzyNoise(.06))); // * (ε1: 0.1)
+        relations.add( new SpatialRelation( "g9", FRONT, "g12", fuzzyNoise(.13)));
+
+        relations.add( new SpatialRelation( "g10", RIGHT, "g11", fuzzyNoise(.43))); // * (ε1: 0.48)
+        relations.add( new SpatialRelation( "g10", RIGHT, "g12", fuzzyNoise(.76)));
+        relations.add( new SpatialRelation( "g10", RIGHT, "g13", fuzzyNoise(.82)));
+
+        relations.add( new SpatialRelation( "g10", FRONT, "g6", fuzzyNoise(.98)));
+        relations.add( new SpatialRelation( "g10", FRONT, "g7", fuzzyNoise(.72)));
+        relations.add( new SpatialRelation( "g10", FRONT, "g8", fuzzyNoise(.49)));
+        relations.add( new SpatialRelation( "g10", FRONT, "g9", fuzzyNoise(.76))); // * (ε1: 0.74)
+        relations.add( new SpatialRelation( "g10", FRONT, "g11", fuzzyNoise(.75))); // * (ε1: 0.77)
+        relations.add( new SpatialRelation( "g10", FRONT, "g12", fuzzyNoise(.54)));
+
+        relations.add( new SpatialRelation( "g11", RIGHT, "g12", fuzzyNoise(.83)));
+        relations.add( new SpatialRelation( "g11", RIGHT, "g13", fuzzyNoise(.71)));
+
+        relations.add( new SpatialRelation( "g11", FRONT, "g7", fuzzyNoise(.48)));
+
+        relations.add( new SpatialRelation( "g12", FRONT, "g7", fuzzyNoise(.43)));
+        relations.add( new SpatialRelation( "g12", FRONT, "g11", fuzzyNoise(.60)));
+
+        relations.add( new SpatialRelation( "g13", RIGHT, "g12", fuzzyNoise(.07)));
+
+        relations.add( new SpatialRelation( "g13", FRONT, "g6", fuzzyNoise(.37)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g7", fuzzyNoise(.48)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g8", fuzzyNoise(.35)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g9", fuzzyNoise(.52)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g10", fuzzyNoise(.46)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g11", fuzzyNoise(.77)));
+        relations.add( new SpatialRelation( "g13", FRONT, "g12", fuzzyNoise(.99)));
     }
-    private static void formatConeLeftScene() { // spheres in diagonal, cone 10cm on the right  han A
-        sceneId = "B";
+
+    private static void formatS4(){
         clear(3);
-        formatObject();
-        formatStaticRelation();
 
-        relations.add(new SpatialRelation(S1, FRONT, C, .60));//fuzzyNoise(.22)));
-        relations.add(new SpatialRelation(S1, RIGHT, C, .35));//fuzzyNoise(.78)));
+        objects.add( new SpatialObject( SPHERE, "g14", fuzzyNoise(.96)));
+        objects.add( new SpatialObject( SPHERE, "g15", fuzzyNoise(.89)));
+        objects.add( new SpatialObject( SPHERE, "g16", fuzzyNoise(.92)));
 
-        relations.add(new SpatialRelation(C, BEHIND, S1, .60));//fuzzyNoise(.22)));
-        relations.add(new SpatialRelation(C, LEFT, S1, .35));//fuzzyNoise(.78)));
+        objects.add(new SpatialObject(CYLINDER, "g14", fuzzyNoise(.08))); // ??
+        objects.add(new SpatialObject(CONE, "g16", fuzzyNoise(.08))); // ??
 
-        relations.add(new SpatialRelation(S2, BEHIND, C, .28));//fuzzyNoise(.7)));
-        relations.add(new SpatialRelation(S2, LEFT, C, .68));//fuzzyNoise(.3)));
+        relations.add( new SpatialRelation( "g14", RIGHT, "g15", fuzzyNoise(.52)));
+        relations.add( new SpatialRelation( "g14", RIGHT, "g16", fuzzyNoise(.49)));
 
-        relations.add(new SpatialRelation(C, FRONT, S2, .28));//fuzzyNoise(.7)));
-        relations.add(new SpatialRelation(C, RIGHT, S2, .68));//fuzzyNoise(.3)));
+        relations.add( new SpatialRelation( "g15", RIGHT, "g16", fuzzyNoise(.54)));
+
+        relations.add( new SpatialRelation( "g15", FRONT, "g14", fuzzyNoise(.49)));
+
+        relations.add( new SpatialRelation( "g16", FRONT, "g14", fuzzyNoise(.51)));
+        relations.add( new SpatialRelation( "g16", FRONT, "g15", fuzzyNoise(.48)));
     }
 
-    //private static String noiseLog = "";
-    private static final double MIN_NOISE = 0.001;//.01;
-    private static final double MAX_NOISE = 0.2;//.2;
-    private static double noise(double rangeMin, double rangeMax){
-        Random rand = new Random();
-        double r = rangeMin + (rangeMax - rangeMin) * rand.nextDouble();
+    private static void formatS5(){
+        clear(3);
+
+        objects.add( new SpatialObject( SPHERE, "g17", fuzzyNoise(.86)));
+        objects.add( new SpatialObject( SPHERE, "g18", fuzzyNoise(.87)));
+        objects.add( new SpatialObject( SPHERE, "g19", fuzzyNoise(.97)));
+
+        objects.add(new SpatialObject(CYLINDER, "g18", fuzzyNoise(.08))); // ??
+        objects.add(new SpatialObject(CONE, "g19", fuzzyNoise(.08))); // ??
+
+        relations.add( new SpatialRelation( "g17", RIGHT, "g18", fuzzyNoise(.58)));
+        relations.add( new SpatialRelation( "g17", RIGHT, "g19", fuzzyNoise(.46)));
+
+        relations.add( new SpatialRelation( "g18", RIGHT, "g19", fuzzyNoise(.53)));
+
+        relations.add( new SpatialRelation( "g18", FRONT, "g17", fuzzyNoise(.51)));
+
+        relations.add( new SpatialRelation( "g19", FRONT, "g17", fuzzyNoise(.58)));
+        relations.add( new SpatialRelation( "g19", FRONT, "g18", fuzzyNoise(.56)));
+    }
+
+    private static String log = "";
+    public static SITABox testScene(int identifier, SITTBox h){
+        log += "-------------------------  S" + identifier + "   ------------------------\n";
+        SITABox r = new SITABox(h, objects, relations);
+        log += "Objects:   " + objects + "\n";
+        log += "Relations: " + relations + "\n";
+        log += "------------------------- learn ------------------------\n";
+        // learn S1
+        h.learn( "Scene" + identifier, r);
+        log += "Sigma Counters: " + r.getDefinition() + "\n";
+        log += "--------------------------------------------------------\n";
         return r;
     }
-    private static double fuzzyNoise( double degree) {
-        double n = noise();
-       // noiseLog += n + ";\n";
-        double noised = degree + n;
-        if (noised <= 0)
-            return 0.001;
-        if (noised >= 1)
-            return 1;
-        else return noised;
-
-       //return degree;
-    }
-    private static double noise(){
-        double rangeMax = noise(MIN_NOISE,MAX_NOISE);
-        double rangeMin = -1*noise(MIN_NOISE,MAX_NOISE);
-        return  noise( rangeMin, rangeMax);
-    }
-
-    private static void formatSceneConeMoving(SITTBox h, double min, double max, double step) {
-
-        String logPath = FuzzySITBase.RESOURCES_PATH + "scenesLog/testscene" + System.currentTimeMillis() + ".log";
-
-        File file = new File(logPath);
-        boolean created = file.getParentFile().mkdirs();
-
-        try(FileWriter fw = new FileWriter(file, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            String logHeader = "cnt,duration[ms],xCone,yCone,degree"
-                    + ",CrightS2,CfrontS2,CleftS1,CbhehindS1"
-                    + "; (a="+ (FuzzySITBase.ROLE_SHOULDER_BOTTOM_PERCENT/100)
-                    +". minSpace=" + min + ". maxSpace=" + max + ". step=" + step + ". minNoise=" + MIN_NOISE + ". maxNoise=" + MAX_NOISE + ". sceneId=" + sceneId + ")";
-            out.println(logHeader);
-            System.out.println(logHeader + "\nwritng in " + logPath);
-
-            long initial = System.currentTimeMillis();
-
-            double spatialNoiseRate = (max-min)/5;// /8;
-
-            int cnt = 1;
-            int todo = (int) ((2+(max-min)/step) * ((max-min)/step)) + 1;
-            double mmx = min;
-            while (mmx <= max){
-                double mmy = min;
-                while (mmy <= max){
-
-                    long t = System.currentTimeMillis();
-                    double mx = mmx + noise(-spatialNoiseRate,spatialNoiseRate);
-                    double my = mmy + noise(-spatialNoiseRate,spatialNoiseRate);
-
-                    if(mx == 0 || mx == max){
-                    }else {
-                        // hp: S1 right C, s1 front C, C front S2, c right S2
-                        formatObject();
-                        formatStaticRelation();
-
-                        double xs1 = mx;//s1 right-left
-                        double ys1 = my;//s1 front-behind
-                        double p11 = Math.max(0, 1 - (2 / Math.PI) * (Math.atan(ys1 / xs1)));
-                        double p12 = Math.max(0, 1 - (2 / Math.PI) * (-Math.atan(ys1 / xs1) + Math.PI / 2));
-//c left s1 - s1 right c
-//c bheind s1 - s1 front c
-                        relations.add(new SpatialRelation(S1, RIGHT, C, p11));//fuzzyNoise(p11)));
-                        relations.add(new SpatialRelation(S1, FRONT, C, p12));//fuzzyNoise(p12)));
-
-                        double cleftS1 = Math.abs(1-p11);//fuzzyNoise(Math.abs(1-p11));
-                        relations.add(new SpatialRelation(C, LEFT, S1, cleftS1));
-                        double cbhehindS1 = Math.abs(1-p12);//fuzzyNoise(Math.abs(1-p12));
-                        relations.add(new SpatialRelation(C, BEHIND, S1, cbhehindS1));
-
-
-                        double xs2 = max - mx;//s2 right-left
-                        double ys2 = max - my;//s2 front-behind
-                        double p21 = Math.max(0, 1 - (2 / Math.PI) * Math.atan(ys2 / xs2));
-                        double p22 = Math.max(0, 1 - (2 / Math.PI) * (-Math.atan(ys2 / xs2) + Math.PI / 2));
-
-                        relations.add(new SpatialRelation(S2, LEFT, C, p21));//fuzzyNoise(p21)));
-                        relations.add(new SpatialRelation(S2, BEHIND, C, p22));//fuzzyNoise(p22)));
-
-                        double cRights2 = Math.abs(1-p21);//fuzzyNoise(Math.abs(1-p21));
-                        relations.add(new SpatialRelation(C, RIGHT, S2, cRights2));
-                        double cfrontS2 = Math.abs(1-p22);//fuzzyNoise(Math.abs(1-p22));
-                        relations.add(new SpatialRelation(C, FRONT, S2, cfrontS2));
-
-
-                        SITABox r = new SITABox(h, objects, relations);
-                        double degree = 0;
-                        for(Double d : r.getRecognitions().values()) {
-                            degree = d;
-                            break; // only one
-                        }
-
-                        String log = cnt
-                                + "," + (System.currentTimeMillis() - t) +"," + mx +"," + my + "," + degree
-                                + ","+cRights2+","+cfrontS2+","+cleftS1+","+cbhehindS1
-                                //noiseLog;
-                                + ";";
-
-                        //noiseLog = "";
-                        out.println( log);
-
-                        if(cnt % 50 == 0)
-                            System.out.println( "[" + ((System.currentTimeMillis() - initial)/1000) + "s]todo:" + todo + "-->" + log);
-                    }
-
-                    cnt++;
-                    mmy += step;
-                }
-                mmx += step;
-            }
-            out.println("done");
-            System.out.println( "log written at " + logPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * The main function to show how to use fuzzy SIT recognition and learning API.
@@ -253,17 +257,128 @@ public class SceneHierarchyTest {
      * @param args not used!
      */
     public static void main(String[] args) {
+        String fileName = System.currentTimeMillis() + "";
+        File file = new File(FuzzySITBase.FILE_HIERARCHY_LOG + fileName + ".log");
+        BufferedWriter bw = null;
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file);
+                bw = new BufferedWriter(fw);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        // instanciate a T-Box with the default T-Box ontology and reasoner configuration file
-        SITABox r;
-        SITTBox h = new SITTBox(FuzzySITBase.RESOURCES_PATH + "ontologies/simpleSITscenes.fuzzydl");
+        while(true) {
+            log = "";
 
-        formatConeLeftScene();
-        r = new SITABox(h, objects, relations);
-        h.learn("SceneBase", r);
+            // instantiate a T-Box with the default T-Box ontology and reasoner configuration file
+            SITTBox hA = new SITTBox(FuzzySITBase.RESOURCES_PATH + "ontologies/RANSACscene.fuzzydl");
+            hA.setFuzziness(30);
+            SITTBox hB = new SITTBox(FuzzySITBase.RESOURCES_PATH + "ontologies/RANSACscene.fuzzydl");
+            hB.setFuzziness(70);
 
-        formatSceneConeMoving(h, 0, .6, .01);//reasonable 0,.6,0.01 (o 0.03) // not sure to work with negative numbers
+            int identifier = 1;
 
-        h.show();
+            formatS1();
+            testScene(identifier, hA);
+            testScene(identifier, hB);
+            identifier += 1;
+
+            formatS2();
+            testScene(identifier, hA);
+            testScene(identifier, hB);
+            identifier += 1;
+
+            formatS3();
+            testScene(identifier, hA);
+            testScene(identifier, hB);
+            identifier += 1;
+
+            formatS4();
+            testScene(identifier, hA);
+            testScene(identifier, hB);
+            identifier += 1;
+
+            formatS5();
+            testScene(identifier, hA);
+            testScene(identifier, hB);
+
+            try {
+                double wA1 = getWeight("Scene3", "Scene1", hA);
+                double wB1 = getWeight("Scene3", "Scene1", hB);
+
+                double wA2 = getWeight("Scene1", "Scene2", hA);
+                double wB2 = getWeight("Scene1", "Scene2", hB);
+
+                /*double wA31 = getWeight("Scene4", "Scene5", hA);
+                double wA32 = getWeight("Scene5", "Scene4", hA);
+                double wB31 = getWeight("Scene4", "Scene5", hB);
+                double wB32 = getWeight("Scene5", "Scene4", hB);
+                double wA3 = Math.abs(wA31 - wA32);
+                double wB3 = Math.abs(wB31 - wB32);*/
+
+                log += " weightA1 " + wA1 + ", weightB1 " + wB1 + "\n";
+                log += " weightA2 " + wA2 + ", weightB2 " + wB2 + "\n";
+                //log += " weightA3 " + wA3 + ", weightB3 " + wB3 + "\n";
+                log += "----------------------------------------------------------\n";
+
+                bw.write(log);
+                System.out.println(log);
+
+                if(((wA1 < 1 && wB1 >= 1) || (wA2 < 1 && wB2 >= 1))){ // && (wA3 >= 0.4) && (wB3 >= 0.4)){
+                    hA.show();
+                    hB.show();
+                    bw.close();
+                    break;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        try {
+            bw.flush();
+            bw.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private static double getWeight(String sourceName, String targetName, SITTBox h){
+        SceneHierarchyVertex source = null;
+        SceneHierarchyVertex target = null;
+        for(SceneHierarchyVertex v : h.getHierarchy().vertexSet()) {
+            if(v.getScene().equals(sourceName)) // "Scene3"
+                source = v;
+            if(v.getScene().equals(targetName)) // "Scene1"
+                target = v;
+        }
+        SceneHierarchyEdge edge = h.getHierarchy().getEdge(source, target);
+        return h.getHierarchy().getEdgeWeight(edge);
+    }
+
+
+    private static final Double MIN_NOISE = 0.08; // Set to null to avoid randomness
+    private static final Double MAX_NOISE = 0.28; // Set to null to avoid randomness
+    private static double fuzzyNoise( double degree) {
+        if( MIN_NOISE == null || MAX_NOISE == null)
+            return degree;
+        double rangeMax = random(MIN_NOISE, MAX_NOISE);
+        if(random(0,10) > 5)
+            rangeMax *= -1;
+        double noised = degree + rangeMax;
+        double toReturn;
+        if (noised <= 0)
+            toReturn = degree;
+        else if (noised >= 1)
+            toReturn = 1;
+        else toReturn = noised;
+        //log += "noising " + degree + " to " + toReturn + " diff: " + (degree - toReturn) + "\n";
+        return toReturn;
+    }
+    private static double random(double rangeMin, double rangeMax){
+        Random rand = new Random();
+        return rangeMin + (rangeMax - rangeMin) * rand.nextDouble();
     }
 }
