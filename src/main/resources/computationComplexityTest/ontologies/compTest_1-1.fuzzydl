@@ -1,0 +1,12 @@
+(define-fuzzy-logic zadeh)
+(define-primitive-concept Object *top*)
+(define-primitive-concept Scene  *top*)
+(disjoint Object Scene)
+(disjoint SpatialObject Scene)
+
+(implies Ca Object)
+
+(range  isRa Object)
+(domain isRa SpatialObject)
+
+(define-concept CaRa (and Ca (some isRa  SpatialObject)))

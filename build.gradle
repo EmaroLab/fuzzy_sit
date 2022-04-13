@@ -1,18 +1,63 @@
-version '1.0-SNAPSHOT'
+plugins {
+    id 'java'
+}
 
-apply plugin: 'java'
+group 'it.emarolab.fuzzySIT'
+version '1.1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    implementation files('libs/FuzzyDL.jar')  // JUnit do not work with FuzzyDL
+    implementation 'org.jgrapht:jgrapht-ext:0.9.1'
 
-    compile fileTree(dir: 'libs', include: '*.jar')
-
-    compile group: 'org.jgrapht', name: 'jgrapht-ext', version: '0.9.1'
-    compile group: 'org.tinyjee.jgraphx', name: 'jgraphx', version: '1.10.1.3'
+    // implementation 'org.tinyjee.jgraphx:jgraphx:1.10.1.3'
+    // the GUI depends on Javafx, which is not set here, therefore the GUI's code is commented and no more supported.
 }
 
-defaultTasks 'tasks'
+task runExample(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "it.emarolab.runnableSITutility.example.SITExample"
+}
+
+task runComputationTest(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    main = "it.emarolab.runnableSITutility.complexity.ComputationalComplexityTest"
+    // Example. Run it with:
+    //     gradle clean runComputationTest
+    //           -Pconcepts='2,4,6'                   # each >= 2, at least 1 element
+    //           -Prelations='2,4'                    # each >= 2, at least 1 element
+    //           -Pscenes='20,20,20,20'               # at least 1 item
+    //           -Pelements='7,11,18,23,30'           # at least 1 item
+    //           -PtasksLimit='16'                    # exaclty one value, i.e., task buffer size
+    // Where `concepts` and `relations` specify the ontology complexity, based on all the permutations of the
+    // given value. Each permutation (e.g., 4,2) should be consistent with a file in the
+    // `resources/computationComplexityTest/ontologies` folder, which should be named as named `compTest_4-2.fuzzydl".
+    // is related to the label X_Y, respectively.
+    //
+    // `Elements` indicates the number of events in each scene, from which the number of its relation is derived.
+    // `Scenes` indicates the number of learned categories.
+    // The simulation iterates for each element of `scenes` and it learns the related number of categories having
+    // the number of each specified `elements`.
+    if (project.hasProperty('concepts')) {
+        args('-Pconcepts=' + concepts.toString())
+    }
+    if (project.hasProperty('relations')) {
+        args('-Prelations=' + relations.toString())
+    }
+    if (project.hasProperty('scenes')) {
+        args('-Pscenes=' + scenes.toString())
+    }
+    if (project.hasProperty('elements')) {
+        args('-Pelements=' + elements.toString())
+    }
+    if (project.hasProperty('tasksLimit')) {
+        args('-PtasksLimit=' + tasksLimit.toString())
+    }
+    // to test all use
+    //gradle clean runComputationTest -Pconcepts='2,4,6,8' -Prelations='8,6,4,2' -Pscenes='20,20,20' -Pelements='2,6,14,22,30' -PtasksLimit='6'
+    // for debugging use
+    //gradle clean runComputationTest -Pconcepts='2' -Prelations='2,4' -Pscenes='2,2,2' -Pelements='2,3,4' -PtasksLimit='2'
+}

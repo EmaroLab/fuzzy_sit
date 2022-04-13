@@ -1,0 +1,726 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.962\fwidth,
+height=\fheight,
+at={(0\fwidth,0\fheight)},
+scale only axis,
+xmin=1,
+xmax=22,
+xtick={0,2,4,6,8,10,12,14,16,18,20,22},
+xlabel style={font=\color{white!15!black}},
+xlabel={Number of Scenes in Memory},
+ymin=0,
+ymax=1100,
+ytick={   0,  100,  200,  300,  400,  500,  600,  700,  800,  900, 1000, 1100},
+ylabel style={font=\color{white!15!black}},
+%ylabel={Computation Time [seconds]},
+axis background/.style={fill=white},
+%title style={font=\bfseries},
+%title={All Learning AVG},
+axis x line*=bottom,
+axis y line*=left,
+xmajorgrids,
+ymajorgrids,
+legend pos=north west,
+legend columns=3, 
+legend style={
+    /tikz/column 2/.style={
+        column sep=5pt,
+    },
+},
+]
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.0001\\
+2	0.062\\
+3	0.26\\
+4	0.705\\
+5	1.954\\
+6	3.194\\
+7	5.147\\
+8	8.254\\
+9	13.981\\
+10	17.977\\
+11	25.867\\
+12	37.902\\
+13	51.196\\
+14	71.308\\
+15	94.767\\
+16	126.109\\
+17	161.317\\
+18	211.272\\
+19	302.258\\
+20	358.864\\
+21	475.287\\
+22	547.109\\
+};
+\addlegendentry{$2-2$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.0001\\
+2	0.028\\
+3	0.131\\
+4	0.455\\
+5	1.138\\
+6	2.763\\
+7	4.907\\
+8	7.436\\
+9	14.385\\
+10	18.275\\
+11	27.958\\
+12	45.201\\
+13	62.375\\
+14	83.483\\
+15	119.527\\
+16	163.635\\
+17	204.746\\
+18	262.47\\
+19	369.482\\
+20	470.766\\
+21	574.21\\
+22	750.04\\
+};
+\addlegendentry{$2-4$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.0001\\
+2	0.0325\\
+3	0.1335\\
+4	0.3525\\
+5	1.0955\\
+6	2.2055\\
+7	3.1805\\
+8	6.576\\
+9	10.2175\\
+10	20.692\\
+11	29.5575\\
+12	45.5335\\
+13	57.9695\\
+14	85.5315\\
+15	116.7255\\
+16	155.277\\
+17	191.523\\
+18	302.315\\
+19	391.065\\
+20	480.7\\
+21	583.363\\
+22	738.261\\
+};
+\addlegendentry{$2-6$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.0001\\
+2	0.034\\
+3	0.138\\
+4	0.4135\\
+5	0.8515\\
+6	1.9315\\
+7	3.7455\\
+8	5.881\\
+9	10.298\\
+10	15.371\\
+11	25.261\\
+12	37.803\\
+13	51.231\\
+14	76.456\\
+15	100.725\\
+16	147.118\\
+17	207.109\\
+18	261.29\\
+19	321.407\\
+20	439.478\\
+21	560.643\\
+22	771.23\\
+};
+\addlegendentry{$2-8$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=triangle*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.026\\
+3	0.118\\
+4	0.257\\
+5	0.784\\
+6	1.495\\
+7	2.269\\
+8	4.74\\
+9	7.349\\
+10	10.994\\
+11	16.723\\
+12	23.979\\
+13	35.595\\
+14	45.378\\
+15	65.076\\
+16	98.34\\
+17	123.356\\
+18	180.754\\
+19	227.709\\
+20	306.881\\
+21	416.963\\
+22	506.383\\
+};
+\addlegendentry{$2-10$};% these commands requires to remove `forget plot`
+\addlegendimage{empty legend}\addlegendentry{}
+
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.041\\
+3	0.159\\
+4	0.3705\\
+5	1.278\\
+6	2.656\\
+7	4.552\\
+8	8.381\\
+9	12.5935\\
+10	25.4535\\
+11	36.636\\
+12	46.719\\
+13	73.5385\\
+14	95.1265\\
+15	124.017\\
+16	181.3945\\
+17	219.7985\\
+18	300.847\\
+19	390.3515\\
+20	510.1465\\
+21	601.9615\\
+22	777.403\\
+};
+\addlegendentry{$4-2$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.036\\
+3	0.154\\
+4	0.456\\
+5	1.148\\
+6	2.002\\
+7	3.896\\
+8	7.31\\
+9	10.677\\
+10	18.999\\
+11	26.888\\
+12	41.8\\
+13	62.328\\
+14	88.107\\
+15	135.406\\
+16	157.739\\
+17	247.963\\
+18	300.962\\
+19	368.101\\
+20	446.026\\
+21	616.631\\
+22	901.486\\
+};
+\addlegendentry{$4-4$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.042\\
+3	0.177\\
+4	0.568\\
+5	1.167\\
+6	2.435\\
+7	4.562\\
+8	8.056\\
+9	13.527\\
+10	23.814\\
+11	36.434\\
+12	51.65\\
+13	78.301\\
+14	112.253\\
+15	154.021\\
+16	237.007\\
+17	302.479\\
+18	422.635\\
+19	575.425\\
+20	778.44\\
+21	1008.848\\
+22	999.6895\\
+};
+\addlegendentry{$4-6$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.04\\
+3	0.188\\
+4	0.576\\
+5	1.389\\
+6	2.721\\
+7	4.209\\
+8	8.361\\
+9	13.984\\
+10	22.507\\
+11	34.512\\
+12	51.44\\
+13	80.382\\
+14	106.018\\
+15	150.301\\
+16	206.106\\
+17	294.221\\
+18	419.73\\
+19	468.4\\
+20	544.992\\
+21	712.5305\\
+22	903.0885\\
+};
+\addlegendentry{$4-8$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=o, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.035\\
+3	0.1525\\
+4	0.4555\\
+5	1\\
+6	2.263\\
+7	3.717\\
+8	6.3835\\
+9	10.231\\
+10	15.81\\
+11	24.582\\
+12	38.0055\\
+13	53.013\\
+14	77.911\\
+15	105.7475\\
+16	147.232\\
+17	209.5075\\
+18	270.0135\\
+19	344.022\\
+20	452.8245\\
+21	662.259\\
+22	743.276\\
+};
+\addlegendentry{$4-10$};% these commands requires to remove `forget plot`
+\addlegendimage{empty legend}\addlegendentry{}
+
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.035\\
+3	0.19\\
+4	0.498\\
+5	1.439\\
+6	2.664\\
+7	3.807\\
+8	6.973\\
+9	13.124\\
+10	20.452\\
+11	33.171\\
+12	44.764\\
+13	69.579\\
+14	97.45\\
+15	145.7\\
+16	186.269\\
+17	280.168\\
+18	360.592\\
+19	438.569\\
+20	639.824\\
+21	781.715\\
+22	766.6125\\
+};
+\addlegendentry{$6-2$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.048\\
+3	0.2\\
+4	0.693\\
+5	1.571\\
+6	2.999\\
+7	5.205\\
+8	11.456\\
+9	17.541\\
+10	26.888\\
+11	44.583\\
+12	68.901\\
+13	84.131\\
+14	128.182\\
+15	164.488\\
+16	269.9\\
+17	377.086\\
+18	527.963\\
+19	753.258\\
+20	906.839\\
+21	861.2935\\
+22	1069.958\\
+};
+\addlegendentry{$6-4$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.044\\
+3	0.184\\
+4	0.505\\
+5	1.401\\
+6	2.618\\
+7	4.641\\
+8	10.736\\
+9	13.389\\
+10	27.929\\
+11	42.893\\
+12	60.522\\
+13	98.157\\
+14	130.091\\
+15	211.737\\
+16	249.435\\
+17	390.246\\
+18	418.221\\
+19	514.7975\\
+20	689.288\\
+21	830.172\\
+22	1038.138\\
+};
+\addlegendentry{$6-6$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.0485\\
+3	0.1875\\
+4	0.613\\
+5	1.2995\\
+6	2.284\\
+7	4.1815\\
+8	7.2425\\
+9	11.3405\\
+10	18.895\\
+11	29.1435\\
+12	40.284\\
+13	56.3185\\
+14	82.577\\
+15	111.922\\
+16	159.224\\
+17	220.484\\
+18	291.21\\
+19	376.146\\
+20	412.906\\
+21	547.557\\
+22	696.1825\\
+};
+\addlegendentry{$6-8$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=diamond*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.036\\
+3	0.1405\\
+4	0.459\\
+5	1.015\\
+6	2.2555\\
+7	3.846\\
+8	6.401\\
+9	11.8505\\
+10	18.664\\
+11	26.3295\\
+12	39.375\\
+13	58.409\\
+14	74.4955\\
+15	116.1815\\
+16	155.53\\
+17	220.3395\\
+18	298\\
+19	394.4055\\
+20	567.713\\
+21	718.7585\\
+22	834.2375\\
+};
+\addlegendentry{$6-10$};% these commands requires to remove `forget plot`
+\addlegendimage{empty legend}\addlegendentry{}
+
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.031\\
+3	0.144\\
+4	0.412\\
+5	0.984\\
+6	1.698\\
+7	4.238\\
+8	6.512\\
+9	11.485\\
+10	14.296\\
+11	23.596\\
+12	37.971\\
+13	56.537\\
+14	76.602\\
+15	115.595\\
+16	166.14\\
+17	164.4745\\
+18	227.6065\\
+19	249.158\\
+20	329.033\\
+21	459.696\\
+22	519.2865\\
+};
+\addlegendentry{$8-2$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.0335\\
+3	0.1565\\
+4	0.5315\\
+5	0.772\\
+6	1.587\\
+7	2.87\\
+8	4.779\\
+9	9.85\\
+10	14.617\\
+11	20.178\\
+12	30.155\\
+13	42.099\\
+14	60.693\\
+15	82.49\\
+16	124.143\\
+17	161.686\\
+18	230.334\\
+19	329.134\\
+20	490.589\\
+21	597.823\\
+22	602.187\\
+};
+\addlegendentry{$8-4$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.055\\
+3	0.173\\
+4	0.59\\
+5	1.344\\
+6	2.5795\\
+7	4.243\\
+8	8.003\\
+9	13.904\\
+10	19.645\\
+11	29.9225\\
+12	44.9505\\
+13	68.145\\
+14	104.7945\\
+15	128.235\\
+16	167.5325\\
+17	234.2375\\
+18	347.431\\
+19	450.7135\\
+20	575.9845\\
+21	746.368\\
+22	1021.174\\
+};
+\addlegendentry{$8-6$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.045\\
+3	0.228\\
+4	0.507\\
+5	1.663\\
+6	2.64\\
+7	5.228\\
+8	9.869\\
+9	12.427\\
+10	23.707\\
+11	39.475\\
+12	59.034\\
+13	89.704\\
+14	137.553\\
+15	185.294\\
+16	323.313\\
+17	334.613\\
+18	345.0325\\
+19	468.2535\\
+20	671.496\\
+21	778.441\\
+22	904.379\\
+};
+\addlegendentry{$8-8$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=square, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.04\\
+3	0.1995\\
+4	0.542\\
+5	1.034\\
+6	2.296\\
+7	4.4805\\
+8	7.575\\
+9	12.546\\
+10	19.7085\\
+11	28.478\\
+12	38.486\\
+13	62.254\\
+14	87.789\\
+15	120.6265\\
+16	161.7255\\
+17	198.5235\\
+18	305.137\\
+19	426.5845\\
+20	554.009\\
+21	646.968\\
+22	800.019\\
+};
+\addlegendentry{$8-10$};% these commands requires to remove `forget plot`
+\addlegendimage{empty legend}\addlegendentry{}
+
+\addplot [color=mycolor1, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor1}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.029\\
+3	0.117\\
+4	0.428\\
+5	0.862\\
+6	1.7385\\
+7	3.2405\\
+8	5.5275\\
+9	9.0875\\
+10	12.9255\\
+11	20.018\\
+12	30.803\\
+13	46.792\\
+14	65.9045\\
+15	87.629\\
+16	118.5585\\
+17	210.824\\
+18	212.8035\\
+19	322.0955\\
+20	339.8055\\
+21	463.825\\
+22	574.6\\
+};
+\addlegendentry{$10-2$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor2, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor2}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.0385\\
+3	0.176\\
+4	0.4945\\
+5	1.064\\
+6	2.4695\\
+7	4.011\\
+8	6.485\\
+9	10.804\\
+10	18.134\\
+11	27.8225\\
+12	45.131\\
+13	62.1705\\
+14	85.7625\\
+15	152.0995\\
+16	169.342\\
+17	236.7635\\
+18	311.5085\\
+19	408.0265\\
+20	540.0675\\
+21	695.542\\
+22	846.8775\\
+};
+\addlegendentry{$10-4$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor3, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor3}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.0385\\
+3	0.1715\\
+4	0.4995\\
+5	1.337\\
+6	2.3725\\
+7	4.7535\\
+8	7.552\\
+9	13.8915\\
+10	19.1565\\
+11	32.0815\\
+12	47.6665\\
+13	70.1715\\
+14	104.6845\\
+15	129.25\\
+16	190.1815\\
+17	244.625\\
+18	335.635\\
+19	420.1595\\
+20	569.6555\\
+21	742.95\\
+22	805.077\\
+};
+\addlegendentry{$10-6$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor4, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor4}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.041\\
+3	0.178\\
+4	0.4795\\
+5	1.1325\\
+6	2.3665\\
+7	4.0695\\
+8	7.1675\\
+9	11.387\\
+10	18.7265\\
+11	31.827\\
+12	47.199\\
+13	68.3105\\
+14	91.903\\
+15	163.089\\
+16	209.98\\
+17	227.165\\
+18	392.586\\
+19	395.94\\
+20	557.476\\
+21	588.2605\\
+22	784.091\\
+};
+\addlegendentry{$10-8$};% these commands requires to remove `forget plot`
+
+\addplot [color=mycolor5, line width=.5pt, mark size=3pt, mark=pentagon*, mark options={solid, mycolor5}]%, forget plot]
+  table[row sep=crcr]{%
+1	0.001\\
+2	0.042\\
+3	0.176\\
+4	0.516\\
+5	1.1355\\
+6	1.971\\
+7	3.7285\\
+8	6.7485\\
+9	9.308\\
+10	16.363\\
+11	23.1065\\
+12	34.6455\\
+13	55.3175\\
+14	88.4925\\
+15	145.7115\\
+16	174.568\\
+17	237.4195\\
+18	334.7845\\
+19	425.167\\
+20	582.517\\
+21	749.6695\\
+22	887.1175\\
+};
+\addlegendentry{$10-10$};% these commands requires to remove `forget plot`
+
+
+\end{axis}
+\end{tikzpicture}%
