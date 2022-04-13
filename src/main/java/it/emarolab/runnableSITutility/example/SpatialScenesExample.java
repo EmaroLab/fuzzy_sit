@@ -161,9 +161,9 @@ public class SpatialScenesExample {
 
     public static void main(String[] args) {
         testScenes(.3);
-        System.out.println("################################################################");
+        System.out.println("\n################################################################\n" +
+                "################################################################\n");
         testScenes(.7);
-        System.out.println("################################################################");
     }
 
     private static final double SPATIAL_MIN_NOISE = 0.010; // in meters
