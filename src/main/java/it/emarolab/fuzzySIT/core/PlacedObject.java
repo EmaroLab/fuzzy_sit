@@ -160,12 +160,13 @@ public class PlacedObject
      * Computes all ({@code isLeftOf, isRightOf, isFrontOf, isBehindOf})
      * the 2D spatial relations between {@code this} object
      * and the specified one.
+     * Attention! This function is not general for ontologies with different relations.
      * @param p the object used to get the spatial relation w.r.t. {@code this}.
      * @return the set of spatial relations between {@code this} and {@code p}.
      */
     public Set<SpatialRelation> getRelations(PlacedObject p){
         Set< SpatialRelation> out = new HashSet<>();
-        // todo general relation types
+        // todo general relation types for different ontology
         addNewRelation( out, "isLeftOf", p, isLeftOf( p));
         addNewRelation( out, "isRightOf", p, isRightOf( p));
         addNewRelation( out, "isBehindOf", p, isBehindOf( p));

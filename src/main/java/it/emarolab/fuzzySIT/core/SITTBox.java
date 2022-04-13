@@ -685,7 +685,7 @@ public class SITTBox
     public void show() {
         SwingUtilities.invokeLater(() -> {
 
-            frame = new JFrame("Scene Hierarchy");
+            frame = new JFrame("Scene Hierarchy (Fuzziness: " + this.fuzziness/100 + ")");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 
