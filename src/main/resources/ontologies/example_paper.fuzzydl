@@ -1,0 +1,16 @@
+(define-fuzzy-logic zadeh)
+
+(define-primitive-concept Object *top*)
+(define-primitive-concept Scene  *top*)
+(disjoint Object Scene)
+(disjoint SpatialObject Scene)
+(implies  Object SpatialObject)
+
+(implies Glass Object)
+(implies Cup   Object)
+
+(range  isFrontOf  Object)
+(domain isFrontOf  SpatialObject)
+
+(define-concept GlassFront (and Glass (some isFrontOf  SpatialObject)))
+(define-concept CupFront   (and Cup   (some isFrontOf  SpatialObject)))

@@ -62,9 +62,11 @@ public class SpatialProperty
     public SpatialProperty(String spatialType) {
         this.spatialType = spatialType;
         String[] parsed = splitCamelCase(spatialType);
-        this.type = parsed[0];
-        this.property = parsed[1];
-        this.spatialProperty = ROLE_SCENE_PREFIX + spatialType;
+        if(parsed != null) {
+            this.type = parsed[0];
+            this.property = parsed[1];
+            this.spatialProperty = ROLE_SCENE_PREFIX + spatialType;
+        }
     }
 
     /**
@@ -148,6 +150,15 @@ public class SpatialProperty
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Check if `this` spatial property has been correctly set.
+     * @return Return `true` if {@link #getProperty()} or {@link #getSpatialProperty()}
+     * or {@link #getType()} are `null`.
+     */
+    public boolean isNull(){
+        return getProperty() == null || getSpatialProperty() == null || getType() == null;
     }
 
     /**

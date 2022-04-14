@@ -108,6 +108,7 @@ It requires a header as
 
 (disjoint Object        Scene)
 (disjoint SpatialObject Scene)
+(implies  Object SpatialObject)
 ```
 Then you should define the type of elements in the scene, e.g., for `Spere` and `Cone` use
 ```
@@ -160,7 +161,7 @@ In particular, in the `runnableSITutility` contains the following runnable scrip
 Both the FuzzySIT core, and the utilities read and write on auxialry file stored in the `resources` folder.
 
 #### 1. `FuzzydlTest`
-It is a script to test the FuzzyDL reasoner by loading an ontology and solve queries.
+It is a script to test the FuzzyDL reasoner by loading an ontology and solving queries.
 
 #### 2. `SITExample`
 Is an example to show the usage of the FuzzySIT API base on a toy scenario.
@@ -182,9 +183,10 @@ Is a simulation done to publish results about a cognitive like memory, involving
 
 #### 6. `MonteCarlo`
 Is a preliminary simulation based on a Montecarlo approach to reconstruct a scene given its learned category.
+This example is not in a stable version.
 
 #### 7. `ComputationComplexity` 
-Is a simulation to log the SIT computation complexity for later evaluations.
+Is a simulation to log the SIT computation complexity to be later evaluated.
 
 You can run the computation complexity test with the command
 ```sh

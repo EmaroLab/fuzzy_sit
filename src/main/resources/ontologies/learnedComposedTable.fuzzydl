@@ -1,4 +1,5 @@
 (define-fuzzy-logic zadeh )
+(implies  Object SpatialObject)
 (define-fuzzy-concept atLeast0.3 right-shoulder(0.0, 20.0, 0.2, 0.3) )
 (define-fuzzy-concept atLeast0.2 right-shoulder(0.0, 20.0, 0.1, 0.2) )
 (define-fuzzy-concept atLeast0.1 right-shoulder(0.0, 20.0, 0.1, 0.1) )

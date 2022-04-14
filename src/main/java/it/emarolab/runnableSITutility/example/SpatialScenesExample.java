@@ -4,7 +4,6 @@ import it.emarolab.fuzzySIT.FuzzySITBase;
 import it.emarolab.fuzzySIT.core.PlacedObject;
 import it.emarolab.fuzzySIT.core.SITABox;
 import it.emarolab.fuzzySIT.core.SITTBox;
-import it.emarolab.fuzzySIT.core.SigmaCounters;
 import it.emarolab.fuzzySIT.core.axioms.SpatialRelation;
 
 import java.util.*;
@@ -129,7 +128,8 @@ public class SpatialScenesExample {
     public static void main(String[] args) {
         SceneFacts.printNoiseSetup();
         System.out.println("\n################################################################\n");
-        testScenes(0, 0.3, 0.5, 0.7, 1);
+        //testScenes(0, 0.3, 0.5, 0.7, 1);
+        testScenes(0.3, 0.7);
     }
 }
 
