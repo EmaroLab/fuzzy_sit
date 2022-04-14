@@ -347,18 +347,21 @@ public class SITTBox
         Set<String> subClasses = querySubConcept(CONCEPT_SPATIAL_TOP, kb);
         for (String subClass :  subClasses){
             // δ ≡ hasΔ
-            SpatialProperty spatialProperty = new SpatialProperty(subClass);
-            spatial.put( subClass, spatialProperty);
-            objectType.add( spatialProperty.getType());
+            if(querySubConcept(subClass, kb).isEmpty()) { // do not elaborate `Object` subclass but only `SpatialObjects`. The latter are always subclass of the former.
+                SpatialProperty spatialProperty = new SpatialProperty(subClass);
+                if (!spatialProperty.isNull()) {
+                    spatial.put(subClass, spatialProperty);
+                    objectType.add(spatialProperty.getType());
 
-            String roleName = spatialProperty.getSpatialProperty();
-            // (domain hasBookLeft Scene)
-            tbox.roleDomain( roleName, kb.getConcept( CONCEPT_SCENE_TOP));
-            //(functional hasBookLeft)
-            tbox.roleIsFunctional( roleName);
-            //(range hasBookLeft *real* 0.0 10.0)
-            tbox.defineRealConcreteFeature( roleName, LIMIT_LOW, LIMIT_HIGH);
-
+                    String roleName = spatialProperty.getSpatialProperty();
+                    // (domain hasBookLeft Scene)
+                    tbox.roleDomain(roleName, kb.getConcept(CONCEPT_SCENE_TOP));
+                    // (functional hasBookLeft)
+                    tbox.roleIsFunctional(roleName);
+                    // (range hasBookLeft *real* 0.0 10.0)
+                    tbox.defineRealConcreteFeature(roleName, LIMIT_LOW, LIMIT_HIGH);
+                }
+            }
         }
     }
     // called on constructor it queries all scene classes Λ ⊂ Spatial (≡ #CONCEPT_SCENE_TOP)
@@ -685,7 +688,7 @@ public class SITTBox
     public void show() {
         SwingUtilities.invokeLater(() -> {
 
-            frame = new JFrame("Scene Hierarchy (Fuzziness: " + this.fuzziness/100 + ")");
+            frame = new JFrame("Scene Hierarchy (" + this.fuzziness/100 + ")");
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 

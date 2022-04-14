@@ -6,6 +6,7 @@
 (define-primitive-concept Scene  *top*)
 (disjoint Object Scene)
 (disjoint SpatialObject Scene)
+(implies  Object SpatialObject)
 
 
 
